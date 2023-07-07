@@ -1,6 +1,6 @@
 from sqlalchemy import Boolean, ForeignKey, Column, Integer, String
 from database import Base, engine
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, Mapped, mapped_column
 
 
 class Users(Base):
@@ -40,58 +40,46 @@ class Organizations(Base):
     owner_id = Column(Integer, ForeignKey('users.id'))
     owner = relationship('Users', back_populates='organizations')
 
+    # objects = relationship('Objects', back_populates='owner')
 
-# class Objects(Base):
-#     __tablename__ = 'objects'
-#
-#     id = Column(Integer, primary_key=True, index=True)
-#     # Наименование объекта (опасного производственного объекта)
-#     name_object = Column(String)
-#     # Адрес объекта
-#     address_object = Column(String)
-#     # Регистрационный номер
-#     reg_number_object = Column(String)
-#     # Класс опасности
-#     class_object = Column(String)
-#     # Внешний ключ на таблицу 'organizations' (у одной организации может быть несколько объектов)
-#     owner_id = Column(Integer, ForeignKey('organizations.id'))
-#     owner = relationship('Organizations', back_populates='objects')
-#     # Отношение многие-ко-многим 'objects'
-#     # (один проект может относится к нескольким объектам и у одного объекта может быть несколько проектов)
-#     project_objects = relationship('Projects', secondary='project_objects', back_populates='objects')
-#     objects_project = relationship('Projects', secondary='objects_project', back_populates='objects')
-#
-#
-# class Projects(Base):
-#     __tablename__ = 'projects'
-#
-#     id = Column(Integer, primary_key=True, index=True)
-#     # Наименование проекта
-#     name_project = Column(String)
-#     # Шифр проекта
-#     code_project = Column(String)
-#     # Описание проекта
-#     description_project = Column(String)
-#     # Отношение многие-ко-многим 'objects'
-#     # (один проект может относится к нескольким объектам и у одного объекта может быть несколько проектов)
-#     project_objects = relationship('Objects', secondary='project_objects', back_populates='projects')
-#     objects_project = relationship('Objects', secondary='objects_project', back_populates='projects')
-#
-#
-# class ProjectObjects(Base):
-#     __tablename__ = "project_objects"
-#
-#     id = Column(Integer, primary_key=True, index=True)
-#     object_id = Column(Integer, ForeignKey('objects.id'))
-#     project_id = Column(Integer, ForeignKey('projects.id'))
-#
-#
-# class ObjectsProject(Base):
-#     __tablename__ = "objects_project"
-#
-#     id = Column(Integer, primary_key=True, index=True)
-#     object_id = Column(Integer, ForeignKey('objects.id'))
-#     project_id = Column(Integer, ForeignKey('projects.id'))
 
+
+class Objects(Base):
+    __tablename__ = "objects"
+
+    id = Column(Integer, primary_key=True)
+    # Наименование объекта (опасного производственного объекта)
+    name_object = Column(String)
+    # Адрес объекта
+    address_object = Column(String)
+    # Регистрационный номер
+    reg_number_object = Column(String)
+    # Класс опасности
+    class_object = Column(String)
+    # связь многие ко многим
+    projects = relationship('Projects', secondary='project_object', back_populates='objects')
+
+
+class Projects(Base):
+    __tablename__ = "projects"
+
+    id = Column(Integer, primary_key=True)
+    # Наименование проекта
+    name_project = Column(String)
+    # Шифр проекта
+    code_project = Column(String)
+    # Описание проекта
+    description_project = Column(String)
+    # связь многие ко многим
+    objects = relationship('Objects', secondary='project_object', back_populates='projects')
+
+
+class ProjectObject(Base):
+    "Таблица связей объектов и проектов"
+    __tablename__ = "project_object"
+
+    id = Column(Integer, primary_key=True)
+    object_id = Column(Integer, ForeignKey('objects.id'))
+    project_id = Column(Integer, ForeignKey('projects.id'))
 
 
