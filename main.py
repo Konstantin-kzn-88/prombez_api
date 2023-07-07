@@ -75,4 +75,4 @@ if __name__ == '__main__':
         print('_'*30)
         orgs = session.query(Organizations).all()
         for org in orgs:
-            print(f"{org.id} {org.name_organization} ({org.owner_id})")
+            print(f"{org.id} {org.name_organization} (user_id = {org.owner_id})")
