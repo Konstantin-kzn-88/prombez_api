@@ -53,29 +53,33 @@ with Session(bind=engine) as session:
 # Create Objects
 with Session(bind=engine) as session:
     # add obj
-    obj1 = Objects(name_object = 'obj1',
-    address_object = 'Addr1',
-    reg_number_object = 'Reg1',
-    class_object = 'class1')
+    obj1 = Objects(name_object='obj1',
+                   address_object='Addr1',
+                   reg_number_object='Reg1',
+                   class_object='class1',
+                   owner_id=1)
     session.add(obj1)
 
-    obj2 = Objects(name_object = 'obj2',
-    address_object = 'Addr2',
-    reg_number_object = 'Reg2',
-    class_object = 'class2')
+    obj2 = Objects(name_object='obj2',
+                   address_object='Addr2',
+                   reg_number_object='Reg2',
+                   class_object='class2',
+                   owner_id=2)
     session.add(obj2)
 
     session.commit()
 
     # add projects
-    prj1 = Projects(name_project = 'Prj1',
-    code_project = 'Code1',
-    description_project = 'Desc1')
+    prj1 = Projects(name_project='Prj1',
+                    code_project='Code1',
+                    description_project='Desc1',
+                    owner_id=1)
     session.add(prj1)
 
-    prj2 = Projects(name_project = 'Prj2',
-    code_project = 'Code2',
-    description_project = 'Desc2')
+    prj2 = Projects(name_project='Prj2',
+                    code_project='Code2',
+                    description_project='Desc2',
+                    owner_id=2)
     session.add(prj2)
 
     session.commit()
@@ -99,3 +103,10 @@ if __name__ == '__main__':
         print('_' * 30)
         print(session.query(Objects).where(Objects.id == 1).one().projects)
         print(session.query(Projects).where(Projects.id == 1).one().objects)
+
+    with Session(bind=engine) as session:
+        # получаем пользователя user с id==1
+        t = session.query(Users).filter(Users.id == 1).first()
+        # удаляем
+        session.delete(t)
+        session.commit()

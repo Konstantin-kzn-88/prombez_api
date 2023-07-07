@@ -1,6 +1,6 @@
-from sqlalchemy import Boolean, ForeignKey, Column, Integer, String
-from database import Base, engine
-from sqlalchemy.orm import relationship, Mapped, mapped_column
+from sqlalchemy import ForeignKey, Column, Integer, String
+from database import Base
+from sqlalchemy.orm import relationship
 
 
 class Users(Base):
@@ -15,7 +15,7 @@ class Users(Base):
     phone_number = Column(String)
     hashed_password = Column(String)
 
-    organizations = relationship('Organizations', back_populates='owner')
+    organizations = relationship('Organizations', back_populates='owner', cascade="all, delete-orphan")
 
 
 class Organizations(Base):
@@ -40,7 +40,8 @@ class Organizations(Base):
     owner_id = Column(Integer, ForeignKey('users.id'))
     owner = relationship('Users', back_populates='organizations')
 
-    # objects = relationship('Objects', back_populates='owner')
+    objects = relationship('Objects', back_populates='owner', cascade="all, delete-orphan")
+    projects = relationship('Projects', back_populates='owner', cascade="all, delete-orphan")
 
 
 
@@ -58,6 +59,9 @@ class Objects(Base):
     class_object = Column(String)
     # связь многие ко многим
     projects = relationship('Projects', secondary='project_object', back_populates='objects')
+    # Внешний ключ на таблицу 'Organizations' (у одной организации может быть несколько объектов)
+    owner_id = Column(Integer, ForeignKey('organizations.id'))
+    owner = relationship('Organizations', back_populates='objects')
 
 
 class Projects(Base):
@@ -72,6 +76,9 @@ class Projects(Base):
     description_project = Column(String)
     # связь многие ко многим
     objects = relationship('Objects', secondary='project_object', back_populates='projects')
+    # Внешний ключ на таблицу 'Organizations' (у одной организации может быть несколько проектов)
+    owner_id = Column(Integer, ForeignKey('organizations.id'))
+    owner = relationship('Organizations', back_populates='projects')
 
 
 class ProjectObject(Base):
