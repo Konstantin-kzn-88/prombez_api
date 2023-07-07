@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 import os
 import models
-from models import Users, Organizations, Objects, Projects
+from models import Users, Organizations, Objects, Projects, Substances
 from database import engine
 
 # Удаление
@@ -90,6 +90,30 @@ with Session(bind=engine) as session:
 
     session.commit()
 
+# Create Substances
+with Session(bind=engine) as session:
+    # add Substances
+
+    for i in range(1, 5):
+        owner_id = 1 if i < 3 else 2
+        sub = Substances(sub_name=f'neft{i}',
+                         sub_density_liguid=785,
+                         sub_density_gas=1.29,
+                         sub_mol_weight=98,
+                         sub_steam_pressure=35,
+                         sub_flash_temp=-28,
+                         sub_boiling_temp=156,
+                         sub_evaporation_heat=300000,
+                         sub_heat_capacity=2100,
+                         sub_class=3,
+                         sub_heat_combustion_temp=45398,
+                         sub_sigma=4,
+                         sub_energy_level=2,
+                         sub_lower_conc=3,
+                         owner_id=owner_id)
+        session.add(sub)
+    session.commit()
+
 if __name__ == '__main__':
     with Session(bind=engine) as session:
         users = session.query(Users).all()
@@ -104,9 +128,9 @@ if __name__ == '__main__':
         print(session.query(Objects).where(Objects.id == 1).one().projects)
         print(session.query(Projects).where(Projects.id == 1).one().objects)
 
-    with Session(bind=engine) as session:
-        # получаем пользователя user с id==1
-        t = session.query(Users).filter(Users.id == 1).first()
-        # удаляем
-        session.delete(t)
-        session.commit()
+    # with Session(bind=engine) as session:
+    #     # получаем пользователя user с id==1
+    #     t = session.query(Users).filter(Users.id == 1).first()
+    #     # удаляем
+    #     session.delete(t)
+    #     session.commit()
