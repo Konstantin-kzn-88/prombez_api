@@ -3,127 +3,44 @@ from database import Base
 from sqlalchemy.orm import relationship
 
 
-class Users(Base):
-    __tablename__ = 'users'
-
-    id = Column(Integer, primary_key=True, index=True)
-    email = Column(String, unique=True, index=True)
-    user_name = Column(String, unique=True, index=True)
-    # Отношение к таблице Organizations
-    organizations = relationship("Organizations", cascade="all, delete-orphan")
+class User(Base):
+    __tablename__ = "user_table"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    email = Column(String, unique=True)
+    user_name = Column(String, unique=True)
+    organization = relationship("Organization", back_populates="user", cascade="all, delete-orphan")
 
 
-class Organizations(Base):
-    __tablename__ = 'organizations'
-
-    id = Column(Integer, primary_key=True, index=True)
-    # Наименование организации
+class Organization(Base):
+    __tablename__ = "org_table"
+    id = Column(Integer, primary_key=True, autoincrement=True)
     name_organization = Column(String)
-    # Внешний ключ на таблицу 'users' (у одного пользователя может быть несколько организаций)
-    user_id = Column(Integer, ForeignKey('users.id'))
-    # Отношение к таблице Objects
-    objects = relationship("Objects", cascade="all, delete-orphan")
+    user_id = Column(Integer, ForeignKey("user_table.id"))
+    user = relationship("User", back_populates="organization")
+    objects = relationship("Object", back_populates="organization", cascade="all, delete-orphan")
 
-object_project = Table('object_project', Base.metadata,
-    Column('object_id', Integer(), ForeignKey("objects.id")),
-    Column('project_id', Integer(), ForeignKey("projects.id"))
+
+object_project = Table(
+    "association_table",
+    Base.metadata,
+    Column("object_id", ForeignKey("object_table.id"), primary_key=True),
+    Column("project_id", ForeignKey("project_table.id"), primary_key=True),
 )
 
-class Objects(Base):
-    __tablename__ = "objects"
 
-    id = Column(Integer, primary_key=True, index=True)
-    # Наименование объекта (опасного производственного объекта)
-    name_object = Column(String, unique=True)
-    # Внешний ключ на таблицу 'organizations' (у одной организации может быть несколько объектов)
-    organization_id = Column(Integer, ForeignKey('organizations.id'))
-
-class Projects(Base):
-    __tablename__ = "projects"
-
-    id = Column(Integer, primary_key=True, index=True)
-    # Наименование проекта
-    name_project = Column(String)
-    # Отношения многие ко многим object_project (у каждого объекта, может быть несколько проектов,
-    # и наоборот)
-    object_id = Column(Integer, ForeignKey('objects.id'))
-    object = relationship("Objects", secondary=object_project, backref="projects")
-    # Отношение к таблице pipelines
-    pipelines = relationship("Pipelines", cascade="all, delete-orphan")
-    # Отношение к таблице devices
-    devices = relationship("Devices", cascade="all, delete-orphan")
-    # Отношение к таблице pumps
-    pumps = relationship("Pumps", cascade="all, delete-orphan")
-    # Отношение к таблице compressors
-    compressors = relationship("Compressors", cascade="all, delete-orphan")
+class Object(Base):
+    __tablename__ = "object_table"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    projects = relationship("Project", secondary=object_project, back_populates="objects")
+    # Отношение к Organization
+    org_id = Column(Integer, ForeignKey("org_table.id"))
+    organization = relationship("Organization", back_populates="objects")
 
 
-class Pipelines(Base):
-    __tablename__ = "pipelines"
-    id = Column(Integer, primary_key=True, index=True)
-    # Наименование трубопровода
-    pipe_name = Column(String)
-    # Внешний ключ на таблицу 'Projects' (у одного проекта может быть несколько трубопроводов)
-    project_id = Column(Integer, ForeignKey('projects.id'))
-    # Отношение один к многим (у одного трубопровода может быть одно вещество, но вещество может
-    #быть у различного оборудования)
-    sub_id = Column(Integer, ForeignKey('substances.id'))
-
-
-class Devices(Base):
-    __tablename__ = "devices"
-    id = Column(Integer, primary_key=True, index=True)
-    # Наименование оборудования
-    dev_name = Column(String)
-    # Внешний ключ на таблицу 'Projects' (у одного проекта может быть несколько оборудований)
-    project_id = Column(Integer, ForeignKey('projects.id'))
-    # Отношение один к многим  (у одного оборудования может быть одно вещество, но вещество может
-    #быть у различного оборудования)
-    sub_id = Column(Integer, ForeignKey('substances.id'))
-
-
-class Pumps(Base):
-    __tablename__ = "pumps"
-    id = Column(Integer, primary_key=True, index=True)
-    # Наименование насоса
-    pump_name = Column(String)
-    # Внешний ключ на таблицу 'Projects' (у одного проекта может быть несколько насосов)
-    project_id = Column(Integer, ForeignKey('projects.id'))
-    # Отношение один к многим (у одного насоса может быть одно вещество, но вещество может
-    # быть у различного оборудования)
-    sub_id = Column(Integer, ForeignKey('substances.id'))
-
-
-class Compressors(Base):
-    __tablename__ = "compressors"
-
-    id = Column(Integer, primary_key=True, index=True)
-    # Наименование компрессора
-    compressor_name = Column(String)
-    # Внешний ключ на таблицу 'Projects' (у одного проекта может быть несколько компрессоров)
-    project_id = Column(Integer, ForeignKey('projects.id'))
-    # Отношение один к многим (у одного компрессора может быть одно вещество, но вещество может
-    # быть у различного оборудования)
-    sub_id = Column(Integer, ForeignKey('substances.id'))
-
-class Substances(Base):
-    __tablename__ = "substances"
-
-    id = Column(Integer, primary_key=True, index=True)
-    # Наименование вещества
-    sub_name = Column(String)
-
-    # Отношение к таблице pipelines
-    pipelines = relationship("Pipelines")
-    # Отношение к таблице devices
-    devices = relationship("Devices")
-    # Отношение к таблице pumps
-    pumps = relationship("Pumps")
-    # Отношение к таблице compressors
-    compressors = relationship("Compressors")
-
-
-
+class Project(Base):
+    __tablename__ = "project_table"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    objects = relationship("Object", secondary=object_project, back_populates="projects")
 
 # from sqlalchemy import ForeignKey, Column, Integer, String, Float
 # from database import Base
