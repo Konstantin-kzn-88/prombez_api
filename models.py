@@ -22,6 +22,7 @@ class Organization(Base):
     # Отношение один-ко-многим к таблице Object
     objects = relationship("Object", back_populates="organizations", cascade="all, delete-orphan")
 
+
 # Ассоциативная таблица Object-Project для двусторонней связи многие-ко-многим
 object_project = Table(
     "association_table",
@@ -46,6 +47,27 @@ class Project(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     # Отношение к таблице Object (многие-ко-многим)
     objects = relationship("Object", secondary=object_project, back_populates="projects")
+    # Отношение один-ко-многим к таблице Pipeline
+    pipelines = relationship("Pipeline", back_populates="projects", cascade="all, delete-orphan")
+
+
+class Pipeline(Base):
+    __tablename__ = "pipeline_table"
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    # Отношение к таблице Project
+    project_id = Column(Integer, ForeignKey("project_table.id"))
+    projects = relationship("Project", back_populates="pipelines")
+    # Отношение один-к-одному
+    substance_id = Column(Integer, ForeignKey("substance_table.id"))
+    substances = relationship("Substance", back_populates="pipelines")
+
+
+class Substance(Base):
+    __tablename__ = "substance_table"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    # отношение к таблице Pipeline
+    pipelines = relationship("Pipeline", back_populates="substances", uselist=False)
 
 # from sqlalchemy import ForeignKey, Column, Integer, String, Float
 # from database import Base

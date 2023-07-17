@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 import os
 import models
-from models import User, Organization, Object, Project
+from models import User, Organization, Object, Project, Pipeline, Substance
 # Substances, Devices, Pumps, Pipelines, Compressors
 from database import engine
 
@@ -61,6 +61,20 @@ with Session(bind=engine) as session:
 
     session.commit()
 
+# Create Sub
+with Session(bind=engine) as session:
+    sub = Substance()
+    session.add(sub)
+    session.commit()
+
+# Create Pipeline
+with Session(bind=engine) as session:
+    # add pipe
+    for i in range(1, 5):
+        pipe = Pipeline(project_id=2, substance_id=1)
+        session.add(pipe)
+    session.commit()
+
 if __name__ == '__main__':
     pass
     # with Session(bind=engine) as session:
@@ -78,9 +92,9 @@ if __name__ == '__main__':
     #         print(f"{obj.id} {obj.name_object} (organization_id = {obj.organization_id})")
     #     print('_' * 30)
 
-    with Session(bind=engine) as session:
-        # получаем пользователя user с id==1
-        t = session.query(User).filter(User.id == 1).first()
-        # удаляем
-        session.delete(t)
-        session.commit()
+    # with Session(bind=engine) as session:
+    #     # получаем пользователя user с id==1
+    #     t = session.query(Project).filter(Project.id == 2).first()
+    #     # удаляем
+    #     session.delete(t)
+    #     session.commit()
