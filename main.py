@@ -6,7 +6,11 @@ from models import User, Organization, Object, Project
 from database import engine
 
 # Удаление
-os.remove('prom_bez.db')
+try:
+    os.remove('prom_bez.db')
+except OSError:
+    pass
+
 # Создание таблиц по models
 models.Base.metadata.create_all(bind=engine)
 
@@ -22,21 +26,19 @@ with Session(bind=engine) as session:
     session.add(usr2)
     session.commit()
 
-
 # Create Organization
 with Session(bind=engine) as session:
     # add org
     for i in range(1, 5):
-        org = Organization()
+        org = Organization(name_organization=f'Org{i}', user_id=1 if i % 2 == 0 else 2)
         session.add(org)
     session.commit()
 
 # Create Object Project
 # Test it
 with Session(bind=engine) as session:
-
     # add users
-    obj1 = Object(org_id= 1)
+    obj1 = Object(org_id=1)
     session.add(obj1)
 
     obj2 = Object(org_id=2)
@@ -78,7 +80,7 @@ if __name__ == '__main__':
 
     with Session(bind=engine) as session:
         # получаем пользователя user с id==1
-        t = session.query(Organization).filter(Organization.id == 2).first()
+        t = session.query(User).filter(User.id == 1).first()
         # удаляем
         session.delete(t)
         session.commit()

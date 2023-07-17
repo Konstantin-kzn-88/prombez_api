@@ -8,18 +8,21 @@ class User(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     email = Column(String, unique=True)
     user_name = Column(String, unique=True)
-    organization = relationship("Organization", back_populates="user", cascade="all, delete-orphan")
+    # Отношение один-ко-многим к таблице Organization
+    organizations = relationship("Organization", back_populates="users", cascade="all, delete-orphan")
 
 
 class Organization(Base):
     __tablename__ = "org_table"
     id = Column(Integer, primary_key=True, autoincrement=True)
-    name_organization = Column(String)
-    user_id = Column(Integer, ForeignKey("user_table.id"))
-    user = relationship("User", back_populates="organization")
-    objects = relationship("Object", back_populates="organization", cascade="all, delete-orphan")
+    name_organization = Column(String, nullable=False)
+    # Отношение к таблице User
+    user_id = Column(Integer, ForeignKey("user_table.id"), nullable=False)
+    users = relationship("User", back_populates="organizations")
+    # Отношение один-ко-многим к таблице Object
+    objects = relationship("Object", back_populates="organizations", cascade="all, delete-orphan")
 
-
+# Ассоциативная таблица Object-Project для двусторонней связи многие-ко-многим
 object_project = Table(
     "association_table",
     Base.metadata,
@@ -31,15 +34,17 @@ object_project = Table(
 class Object(Base):
     __tablename__ = "object_table"
     id = Column(Integer, primary_key=True, autoincrement=True)
+    # Отношение к таблице Project (многие-ко-многим)
     projects = relationship("Project", secondary=object_project, back_populates="objects")
-    # Отношение к Organization
+    # Отношение к таблице Organization
     org_id = Column(Integer, ForeignKey("org_table.id"))
-    organization = relationship("Organization", back_populates="objects")
+    organizations = relationship("Organization", back_populates="objects")
 
 
 class Project(Base):
     __tablename__ = "project_table"
     id = Column(Integer, primary_key=True, autoincrement=True)
+    # Отношение к таблице Object (многие-ко-многим)
     objects = relationship("Object", secondary=object_project, back_populates="projects")
 
 # from sqlalchemy import ForeignKey, Column, Integer, String, Float
