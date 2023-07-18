@@ -6,8 +6,13 @@ from sqlalchemy.orm import relationship
 class User(Base):
     __tablename__ = "user_table"
     id = Column(Integer, primary_key=True, autoincrement=True)
-    email = Column(String, unique=True)
-    user_name = Column(String, unique=True)
+    email = Column(String, unique=True, index=True)
+    user_name = Column(String, unique=True, index=True)
+    company_name = Column(String)
+    first_name = Column(String)
+    last_name = Column(String)
+    phone_number = Column(String)
+    hashed_password = Column(String)
     # Отношение один-ко-многим к таблице Organization
     organizations = relationship("Organization", back_populates="users", cascade="all, delete-orphan")
 
@@ -15,7 +20,20 @@ class User(Base):
 class Organization(Base):
     __tablename__ = "org_table"
     id = Column(Integer, primary_key=True, autoincrement=True)
-    name_organization = Column(String, nullable=False)
+    # Наименование организации
+    name_organization = Column(String)
+    # Должность и ФИО директора
+    name_position_director = Column(String)
+    name_director = Column(String)
+    # Должность и ФИО технического руководителя (главный инженер)
+    name_position_tech_director = Column(String)
+    name_tech_director = Column(String)
+    # Юридический адрес
+    legal_address = Column(String)
+    # Телефон
+    telephone = Column(String)
+    # Почта
+    email = Column(String)
     # Отношение к таблице User
     user_id = Column(Integer, ForeignKey("user_table.id"), nullable=False)
     users = relationship("User", back_populates="organizations")
@@ -35,6 +53,14 @@ object_project = Table(
 class Object(Base):
     __tablename__ = "object_table"
     id = Column(Integer, primary_key=True, autoincrement=True)
+    # Наименование объекта (опасного производственного объекта)
+    name_object = Column(String, unique=True)
+    # Адрес объекта
+    address_object = Column(String)
+    # Регистрационный номер
+    reg_number_object = Column(String, unique=True)
+    # Класс опасности
+    class_object = Column(String)
     # Отношение к таблице Project (многие-ко-многим)
     projects = relationship("Project", secondary=object_project, back_populates="objects")
     # Отношение к таблице Organization
@@ -45,10 +71,20 @@ class Object(Base):
 class Project(Base):
     __tablename__ = "project_table"
     id = Column(Integer, primary_key=True, autoincrement=True)
+    # Наименование проекта
+    name_project = Column(String)
+    # Шифр проекта
+    code_project = Column(String)
+    # Описание проекта
+    description_project = Column(String)
     # Отношение к таблице Object (многие-ко-многим)
     objects = relationship("Object", secondary=object_project, back_populates="projects")
     # Отношение один-ко-многим к таблице Pipeline
     pipelines = relationship("Pipeline", back_populates="projects", cascade="all, delete-orphan")
+    # Отношение один-ко-многим к таблице Device
+    devices = relationship("Device", back_populates="projects", cascade="all, delete-orphan")
+    # Отношение один-ко-многим к таблице Device
+    pumps = relationship("Pump", back_populates="projects", cascade="all, delete-orphan")
 
 
 class Pipeline(Base):
@@ -62,102 +98,67 @@ class Pipeline(Base):
     substances = relationship("Substance", back_populates="pipelines")
 
 
+class Device(Base):
+    __tablename__ = "device_table"
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    # Отношение к таблице Project
+    project_id = Column(Integer, ForeignKey("project_table.id"))
+    projects = relationship("Project", back_populates="devices")
+    # Отношение один-к-одному
+    substance_id = Column(Integer, ForeignKey("substance_table.id"))
+    substances = relationship("Substance", back_populates="devices")
+
+class Pump(Base):
+    __tablename__ = "pump_table"
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    # Отношение к таблице Project
+    project_id = Column(Integer, ForeignKey("project_table.id"))
+    projects = relationship("Project", back_populates="pumps")
+    # Отношение один-к-одному
+    substance_id = Column(Integer, ForeignKey("substance_table.id"))
+    substances = relationship("Substance", back_populates="pumps")
+
 class Substance(Base):
     __tablename__ = "substance_table"
-
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    # Наименование вещества
+    sub_name = Column(String)
+    # Плотность вещества, кг/м3
+    sub_density_liguid = Column(Integer)
+    # Плотность газовой фазы при н.у., кг/м3
+    sub_density_gas = Column(Float)
+    # Мол.масса, кг/кмоль
+    sub_mol_weight = Column(Float)
+    # Давление пара, кПа
+    sub_steam_pressure = Column(Integer)
+    # Температура вспышки, град С
+    sub_flash_temp = Column(Integer)
+    # Температура кипения, град С
+    sub_boiling_temp = Column(Integer)
+    # Теплота испарения, Дж/кг
+    sub_evaporation_heat = Column(Integer)
+    # Теплоемкость жидкости, Дж/(кг*К)
+    sub_heat_capacity = Column(Integer)
+    # Класс вещества (для взрыва (1,2,3,4))
+    sub_class = Column(Integer)
+    # Теплота сгорания, кДж/кг
+    sub_heat_combustion_temp = Column(Integer)
+    # Параметр сигма (для взрыва (4 - гетерогенная смесь, 7 - гомогенная смесь)
+    sub_sigma = Column(Integer)
+    # Энергозапас (для взрыва (2 - облако тяжелого газа лежит на земле, 1 - не лежит на земле)
+    sub_energy_level = Column(Integer)
+    # Нижний концентрационный предел взрываемости, об.%
+    sub_lower_conc = Column(Float)
     # отношение к таблице Pipeline
     pipelines = relationship("Pipeline", back_populates="substances", uselist=False)
+    # отношение к таблице Device
+    devices = relationship("Device", back_populates="substances", uselist=False)
+    # отношение к таблице Pump
+    pumps = relationship("Pump", back_populates="substances", uselist=False)
 
-# from sqlalchemy import ForeignKey, Column, Integer, String, Float
-# from database import Base
-# from sqlalchemy.orm import relationship
-#
-#
-# class Users(Base):
-#     __tablename__ = 'users'
-#
-#     id = Column(Integer, primary_key=True, index=True)
-#     email = Column(String, unique=True, index=True)
-#     user_name = Column(String, unique=True, index=True)
-#     company_name = Column(String)
-#     first_tname = Column(String)
-#     last_name = Column(String)
-#     phone_number = Column(String)
-#     hashed_password = Column(String)
-#
-#     organizations = relationship('Organizations', back_populates='owner', cascade="all, delete-orphan")
-#
-#
-# class Organizations(Base):
-#     __tablename__ = 'organizations'
-#
-#     id = Column(Integer, primary_key=True, index=True)
-#     # Наименование организации
-#     name_organization = Column(String)
-#     # Должность и ФИО директора
-#     name_position_director = Column(String)
-#     name_director = Column(String)
-#     # Должность и ФИО технического руководителя (главный инженер)
-#     name_position_tech_director = Column(String)
-#     name_tech_director = Column(String)
-#     # Юридический адрес
-#     legal_address = Column(String)
-#     # Телефон
-#     telephone = Column(String)
-#     # Почта
-#     email = Column(String)
-#     # Внешний ключ на таблицу 'users' (у одного пользователя может быть несколько организаций)
-#     owner_id = Column(Integer, ForeignKey('users.id'))
-#     owner = relationship('Users', back_populates='organizations')
-#
-#     objects = relationship('Objects', back_populates='owner', cascade="all, delete-orphan")
-#
-#
-# class Objects(Base):
-#     __tablename__ = "objects"
-#
-#     id = Column(Integer, primary_key=True, index=True)
-#     # Наименование объекта (опасного производственного объекта)
-#     name_object = Column(String, unique=True)
-#     # Адрес объекта
-#     address_object = Column(String)
-#     # Регистрационный номер
-#     reg_number_object = Column(String, unique=True)
-#     # Класс опасности
-#     class_object = Column(String)
-#     # связь многие ко многим
-#     projects = relationship('Projects', secondary='project_object', back_populates='objects')
-#     # Внешний ключ на таблицу 'Organizations' (у одной организации может быть несколько объектов)
-#     owner_id = Column(Integer, ForeignKey('organizations.id'))
-#     owner = relationship('Organizations', back_populates='objects')
-#
-#
-# class Projects(Base):
-#     __tablename__ = "projects"
-#
-#     id = Column(Integer, primary_key=True, index=True)
-#     # Наименование проекта
-#     name_project = Column(String)
-#     # Шифр проекта
-#     code_project = Column(String)
-#     # Описание проекта
-#     description_project = Column(String)
-#     # связь многие ко многим
-#     objects = relationship('Objects', secondary='project_object', back_populates='projects')
-#     # Внешний ключ на таблицу 'Objects' (у однго объекта может быть несколько проектов)
-#     owner_id = Column(Integer, ForeignKey('objects.id'))
-#     owner = relationship('Objects', back_populates='projects')
-#
-#
-# class ProjectObject(Base):
-#     "Таблица связей объектов и проектов"
-#     __tablename__ = "project_object"
-#
-#     id = Column(Integer, primary_key=True, index=True)
-#     object_id = Column(Integer, ForeignKey('objects.id'))
-#     project_id = Column(Integer, ForeignKey('projects.id'))
-#
+
+
+
 #
 # class Substances(Base):
 #     __tablename__ = "substances"
