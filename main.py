@@ -1,79 +1,15 @@
-from sqlalchemy.orm import Session
-import os
-import models
-from models import User, Organization, Object, Project, Pipeline, Substance
-# Substances, Devices, Pumps, Pipelines, Compressors
-from database import engine
+import random
+from itertools import cycle as iter_cycle
 
-# Удаление
-try:
-    os.remove('prom_bez.db')
-except OSError:
-    pass
+l1 = [1, 2, 3]
+# using list iterable as an argument in itertools.cycle()
+l2 = iter_cycle(l1)
+print(l2)  # Output:<itertools.cycle object at 0x02F794E8>
 
-# Создание таблиц по models
-models.Base.metadata.create_all(bind=engine)
+count = 0
+for i in range(1,15):
+    print(random.randint(1,3))
 
-# Create Users
-with Session(bind=engine) as session:
-    # add users
-    usr1 = User(email='test1@yandex.ru',
-                user_name='Test1')
-    session.add(usr1)
-
-    usr2 = User(email='test2@yandex.ru',
-                user_name='Test2')
-    session.add(usr2)
-    session.commit()
-
-# Create Organization
-with Session(bind=engine) as session:
-    # add org
-    for i in range(1, 5):
-        org = Organization(name_organization=f'Org{i}', user_id=1 if i % 2 == 0 else 2)
-        session.add(org)
-    session.commit()
-
-# Create Object Project
-# Test it
-with Session(bind=engine) as session:
-    # add users
-    obj1 = Object(org_id=1)
-    session.add(obj1)
-
-    obj2 = Object(org_id=2)
-    session.add(obj2)
-
-    session.commit()
-
-    # add projects
-    prj1 = Project()
-    session.add(prj1)
-
-    prj2 = Project()
-    session.add(prj2)
-
-    session.commit()
-
-    # map users to projects
-    prj1.objects = [obj1, obj2]
-    prj2.objects = [obj1]
-
-    session.commit()
-
-# Create Sub
-with Session(bind=engine) as session:
-    sub = Substance()
-    session.add(sub)
-    session.commit()
-
-# Create Pipeline
-with Session(bind=engine) as session:
-    # add pipe
-    for i in range(1, 5):
-        pipe = Pipeline(project_id=2, substance_id=1)
-        session.add(pipe)
-    session.commit()
 
 if __name__ == '__main__':
     pass
