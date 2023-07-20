@@ -236,6 +236,12 @@ with Session(bind=engine) as session:
         session.add(pump)
     session.commit()
 
+
+with Session(bind=engine) as session:
+    prj = session.query(Project).filter(Project.id == 2).one()
+    session.delete(prj)
+    session.commit()
+
 # _____________________________________________
 # Удаление многие ко многим
 # _____________________________________________
