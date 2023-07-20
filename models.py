@@ -39,6 +39,8 @@ class Organization(Base):
     users = relationship("User", back_populates="organizations")
     # Отношение один-ко-многим к таблице Object
     objects = relationship("Object", back_populates="organizations", cascade="all, delete-orphan")
+    # Отношение один-ко-многим к таблице Project
+    projects = relationship("Project", back_populates="organizations", cascade="all, delete-orphan")
 
 
 # Ассоциативная таблица Object-Project для двусторонней связи многие-ко-многим
@@ -77,13 +79,16 @@ class Project(Base):
     code_project = Column(String)
     # Описание проекта
     description_project = Column(String)
+    # Отношение к таблице Organization
+    org_id = Column(Integer, ForeignKey("org_table.id"))
+    organizations = relationship("Organization", back_populates="projects")
     # Отношение к таблице Object (многие-ко-многим)
     objects = relationship("Object", secondary=object_project, back_populates="projects")
     # Отношение один-ко-многим к таблице Pipeline
     pipelines = relationship("Pipeline", back_populates="projects", cascade="all, delete-orphan")
     # Отношение один-ко-многим к таблице Device
     devices = relationship("Device", back_populates="projects", cascade="all, delete-orphan")
-    # Отношение один-ко-многим к таблице Device
+    # Отношение один-ко-многим к таблице Pump
     pumps = relationship("Pump", back_populates="projects", cascade="all, delete-orphan")
 
 
@@ -150,6 +155,7 @@ class Device(Base):
     substance_id = Column(Integer, ForeignKey("substance_table.id"))
     substances = relationship("Substance", back_populates="devices")
 
+
 class Pump(Base):
     __tablename__ = "pump_table"
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
@@ -173,6 +179,7 @@ class Pump(Base):
     # Отношение один-к-одному
     substance_id = Column(Integer, ForeignKey("substance_table.id"))
     substances = relationship("Substance", back_populates="pumps")
+
 
 class Substance(Base):
     __tablename__ = "substance_table"
@@ -211,9 +218,6 @@ class Substance(Base):
     devices = relationship("Device", back_populates="substances", uselist=False)
     # отношение к таблице Pump
     pumps = relationship("Pump", back_populates="substances", uselist=False)
-
-
-
 
 #
 #

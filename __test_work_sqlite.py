@@ -90,22 +90,26 @@ with Session(bind=engine) as session:
     # add projects
     prj1 = Project(name_project='Project1',
                    code_project='98-2021',
-                   description_project='About project')
+                   description_project='About project',
+                   org_id=1)
     session.add(prj1)
 
     prj2 = Project(name_project='Project2',
                    code_project='25-25',
-                   description_project='About project')
+                   description_project='About project',
+                   org_id=2)
     session.add(prj2)
 
     prj3 = Project(name_project='Project3',
                    code_project='33-2021',
-                   description_project='About project')
+                   description_project='About project',
+                   org_id=1)
     session.add(prj3)
 
     prj4 = Project(name_project='Project4',
                    code_project='25-58',
-                   description_project='About project')
+                   description_project='About project',
+                   org_id=2)
     session.add(prj4)
 
     session.commit()
@@ -231,3 +235,15 @@ with Session(bind=engine) as session:
                     )
         session.add(pump)
     session.commit()
+
+# _____________________________________________
+# Удаление многие ко многим
+# _____________________________________________
+# with Session(bind=engine) as session:
+#
+#     obj = session.query(Object).filter(Object.id == 2).one()
+#     for ass in obj.projects:
+#         session.delete(ass)
+#     session.delete(obj)
+#     session.commit()
+# ________________________________________________
