@@ -43,6 +43,19 @@ class User(BaseModel):
     phone_number: str
     hashed_password: str
 
+    class Config:
+        schema_extra = {
+            'example': {
+                'user_name': 'Nick_name',
+                'email': 'pochta@mail.ru',
+                'company_name': 'Super_company',
+                'first_name': 'Kostya',
+                'last_name': 'Kuznetsov',
+                'phone_number': '+79172656091',
+                'hashed_password': 'jit{)}}}!'
+            }
+        }
+
 
 @router.get('/')
 async def read_all_users(db: Session = Depends(get_db)):
@@ -67,7 +80,7 @@ async def read_user_with_id(user_id: int, db: Session = Depends(get_db)):
 @router.post('/')
 async def create_user(user: User, db: Session = Depends(get_db)):
     '''
-
+    Добавление нового пользователя
     :param user: class User с аттрибутами для полей базы данных
     :param db: - параметр привязки к базе данных через функцию get_db
     :return: - ответ о добавлении пользователя
@@ -86,6 +99,46 @@ async def create_user(user: User, db: Session = Depends(get_db)):
 
     return successful_response(201)
 
+@router.put('/{user_id}')
+async def update_user(user_id: int, user: User, db: Session = Depends(get_db)):
+    '''
+    Обновление данных пользователя по id
+    :param user_id: - id пользователя из таблицы USER базы данных
+    :param user: class User с аттрибутами для полей базы данных
+    :param db: - параметр привязки к базе данных через функцию get_db
+    :return:
+    '''
+    user_model = db.query(models.User).filter(models.User.id == user_id).first()
+    if user_model is None:
+        raise http_exception()
+    user_model.user_name = user.user_name
+    user_model.email = user.email
+    user_model.company_name = user.company_name
+    user_model.first_name = user.first_name
+    user_model.last_name = user.last_name
+    user_model.phone_number = user.phone_number
+    user_model.hashed_password = user.hashed_password
+
+    db.add(user_model)
+    db.commit()
+
+    return successful_response(200)
+
+@router.delete('/{user_id}')
+async def delete_user(user_id: int, db: Session = Depends(get_db)):
+    '''
+    Удаление пользователя по id
+    :param user_id: - id пользователя из таблицы USER базы данных
+    :param db: - параметр привязки к базе данных через функцию get_db
+    :return:
+    '''
+    user_model = db.query(models.User).filter(models.User.id == user_id).first()
+    if user_model is None:
+        raise http_exception()
+    db.query(models.User).filter(models.User.id == user_id).delete()
+    db.commit()
+
+    return successful_response(200)
 
 def http_exception():
     return HTTPException(status_code=404, detail="User not found")
