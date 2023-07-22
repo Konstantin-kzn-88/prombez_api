@@ -6,9 +6,9 @@ from fastapi import Depends, APIRouter, HTTPException
 import models
 from database import SessionLocal, engine
 from sqlalchemy.orm import Session
-from pydantic import BaseModel, Field, EmailStr
+from pydantic import BaseModel, EmailStr
 
-# from .auth import get_current_user, get_user_exception, verify_password, get_password_hash
+from .auth import get_current_user, verify_password, get_password_hash
 
 router = APIRouter(
     prefix='/users',
@@ -34,118 +34,53 @@ class UserVerification(BaseModel):
     new_password: str
 
 
-class User(BaseModel):
-    user_name: str
-    email: EmailStr
-    company_name: str
-    first_name: str
-    last_name: str
-    phone_number: str
-    hashed_password: str
-
-    class Config:
-        schema_extra = {
-            'example': {
-                'user_name': 'Nick_name',
-                'email': 'pochta@mail.ru',
-                'company_name': 'Super_company',
-                'first_name': 'Kostya',
-                'last_name': 'Kuznetsov',
-                'phone_number': '+79172656091',
-                'hashed_password': 'jit{)}}}!'
-            }
-        }
-
-
 @router.get('/')
 async def read_all_users(db: Session = Depends(get_db)):
-    '''Получение всех пользователей из таблицы USER базы данных '''
     return db.query(models.User).all()
 
 
-@router.get('/{user_id}')
-async def read_user_with_id(user_id: int, db: Session = Depends(get_db)):
-    '''
-    Получение пользователя по id
-    :param user_id: - id пользователя из таблицы USER базы данных
-    :param db: - параметр привязки к базе данных через функцию get_db
-    :return: user_model - dict с полями из базы данных для конкретного пользователя
-    '''
+@router.get('/user/{user_id}')
+async def user_by_path(user_id: int, db: Session = Depends(get_db)):
+    print('Here')
+    user_model = db.query(models.User).filter(models.User.id == user_id).all()
+
+    if user_model is not None:
+        return user_model
+    return 'Invalid user_id'
+
+
+@router.get('/user/')
+async def user_by_path(user_id: int, db: Session = Depends(get_db)):
     user_model = db.query(models.User).filter(models.User.id == user_id).first()
     if user_model is not None:
         return user_model
-    raise http_exception()
+    return 'Invalid user_id'
 
 
-@router.post('/')
-async def create_user(user: User, db: Session = Depends(get_db)):
-    '''
-    Добавление нового пользователя
-    :param user: class User с аттрибутами для полей базы данных
-    :param db: - параметр привязки к базе данных через функцию get_db
-    :return: - ответ о добавлении пользователя
-    '''
-    user_model = models.User()
-    user_model.user_name = user.user_name
-    user_model.email = user.email
-    user_model.company_name = user.company_name
-    user_model.first_name = user.first_name
-    user_model.last_name = user.last_name
-    user_model.phone_number = user.phone_number
-    user_model.hashed_password = user.hashed_password
+@router.put('/user/password')
+async def user_pass_word_change(user_verification: UserVerification,
+                                user: dict = Depends(get_current_user),
+                                                     db: Session = Depends(get_db)):
+    if user is None:
+        raise HTTPException(status_code=404, detail='Not Found')
+    user_model = db.query(models.User).filter(models.User.id == user.get('user_id')).first()
+    if user_model is not None:
+        if user_verification.user_name == user_model.username and verify_password(user_verification.password, user_model.hashed_password):
+            user_model.hashed_password = get_password_hash(user_verification.new_password)
+            db.add(user_model)
+            db.commit()
+            return 'Successful change password'
 
-    db.add(user_model)
-    db.commit()
+    return 'Invalid user or request'
 
-    return successful_response(201)
 
-@router.put('/{user_id}')
-async def update_user(user_id: int, user: User, db: Session = Depends(get_db)):
-    '''
-    Обновление данных пользователя по id
-    :param user_id: - id пользователя из таблицы USER базы данных
-    :param user: class User с аттрибутами для полей базы данных
-    :param db: - параметр привязки к базе данных через функцию get_db
-    :return:
-    '''
-    user_model = db.query(models.User).filter(models.User.id == user_id).first()
+@router.delete('/user')
+async def delete_user(user: dict = Depends(get_current_user), db: Session = Depends(get_db)):
+    if user is None:
+        raise HTTPException(status_code=404, detail='Not Found')
+    user_model = db.query(models.User).filter(models.User.id == user.get('user_id')).first()
     if user_model is None:
-        raise http_exception()
-    user_model.user_name = user.user_name
-    user_model.email = user.email
-    user_model.company_name = user.company_name
-    user_model.first_name = user.first_name
-    user_model.last_name = user.last_name
-    user_model.phone_number = user.phone_number
-    user_model.hashed_password = user.hashed_password
-
-    db.add(user_model)
+        return 'Invalid user or request'
+    db.query(models.User).filter(models.User.id == user.get('user_id')).delete()
     db.commit()
-
-    return successful_response(200)
-
-@router.delete('/{user_id}')
-async def delete_user(user_id: int, db: Session = Depends(get_db)):
-    '''
-    Удаление пользователя по id
-    :param user_id: - id пользователя из таблицы USER базы данных
-    :param db: - параметр привязки к базе данных через функцию get_db
-    :return:
-    '''
-    user_model = db.query(models.User).filter(models.User.id == user_id).first()
-    if user_model is None:
-        raise http_exception()
-    db.query(models.User).filter(models.User.id == user_id).delete()
-    db.commit()
-
-    return successful_response(200)
-
-def http_exception():
-    return HTTPException(status_code=404, detail="User not found")
-
-
-def successful_response(status_code: int):
-    return {
-        'status': status_code,
-        'transaction': 'successful'
-    }
+    return 'Delete succssesful'
