@@ -6,7 +6,7 @@ from fastapi import Depends, APIRouter, HTTPException
 import models
 from database import SessionLocal, engine
 from sqlalchemy.orm import Session
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 
 from .auth import get_current_user, verify_password, get_password_hash
 
