@@ -4,7 +4,7 @@
 <div class="container">
     <div class="card">
         <div class="card-header">
-            Register
+            Регистрация нового пользователя
         </div>
         <div class="card-body">
             {% if msg %}
@@ -18,42 +18,42 @@
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label>Email</label>
-                        <input type="email" class="form-control" name="email">
+                        <input type="email" class="form-control" name="email" required placeholder="example@mail.com">
                     </div>
                     <div class="form-group col-md-6">
-                        <label>Username</label>
-                        <input type="username" class="form-control" name="user_name">
+                        <label>Логин</label>
+                        <input type="username" class="form-control" name="user_name" required placeholder="Ваш логин">
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label>First Name</label>
-                        <input type="text" class="form-control" name="firstname">
+                        <label>Имя</label>
+                        <input type="text" class="form-control" name="firstname" required placeholder="Ваше имя">
                     </div>
                     <div class="form-group col-md-6">
-                        <label>Last Name</label>
-                        <input type="text" class="form-control" name="lastname">
+                        <label>Фамилия</label>
+                        <input type="text" class="form-control" name="lastname" required placeholder="Ваша фамилия">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Password</label>
+                    <label>Пароль</label>
                     <input type="password" class="form-control"
-                           name="password" required>
+                           name="password" required placeholder="Ваш пароль">
                 </div>
 
                 <div class="form-group">
-                    <label>Verify Password</label>
+                    <label>Повторите пароль</label>
                     <input type="password" class="form-control"
-                           name="password2" required>
+                           name="password2" required placeholder="Повторите ваш пароль">
                 </div>
 
 
-                <button type="submit" class="btn btn-primary">Sign in</button>
+                <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
             </form>
         </div>
         <div class="card-footer text-muted">
-            <a href="/auth"> Already have an account? </a>
+            <a href="/auth"> Уже есть аккаунт? </a>
         </div>
     </div>
 </div>

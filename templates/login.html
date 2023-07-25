@@ -3,7 +3,7 @@
 <div class="container">
     <div class="card">
         <div class="card-header">
-            Login
+            Вход
         </div>
         <div class="card-body">
 
@@ -20,19 +20,19 @@
             {% endif %}
             <form method="post" action="/auth">
                 <div class="form-group">
-                    <label>Username</label>
+                    <label>Логин</label>
                     <input type="text" class="form-control"
-                           name="email" required>
+                           name="email" required placeholder="Ваш логин">
                 </div>
                 <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" class="form-control" name="password" required>
+                    <label>Пароль</label>
+                    <input type="password" class="form-control" name="password" required placeholder="Ваш пароль">
                 </div>
-                <button type="submit" class="btn btn-primary">Login</button>
+                <button type="submit" class="btn btn-primary">Войти</button>
             </form>
         </div>
         <div class="card-footer text-muted">
-            <a href="/auth/register"> Register? </a>
+            <a href="/auth/register"> Зарегистрироваться? </a>
         </div>
     </div>
 </div>
