@@ -1,0 +1,23 @@
+{% include 'layout.html' %}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            Информация об аккаунте (возможно редактирование данных)
+        </div>
+        <div class="card-body">
+            {% if msg %}
+            <div class="alert alert-secondary" role="alert">
+                {{ msg }}
+            </div>
+            {% endif %}
+            <form method="post">
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" class="form-control" name="email" value="{{ current_user.email }}" required>
+                </div>
+                <button type="submit" class="btn btn-danger">Изменить данные?</button>
+            </form>
+        </div>
+    </div>
+</div>

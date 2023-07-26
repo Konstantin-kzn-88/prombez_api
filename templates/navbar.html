@@ -11,8 +11,17 @@
                     <a class="nav-link" href="/price">Цены </a>
                 </li>
                 {% if user %}
-                <li class="nav-item active">
-                    <a class="nav-link" href="/">Home </a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Данные пользователя
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/account/account_info">Аккаунт</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Организации</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
                 </li>
                 {% endif %}
             </ul>

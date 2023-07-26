@@ -2,13 +2,17 @@ import sys
 
 sys.path.append('..')
 
-from fastapi import Depends, APIRouter, HTTPException
+from fastapi import Depends, APIRouter, HTTPException, Request
+from fastapi.templating import Jinja2Templates
 import models
 from database import SessionLocal, engine
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 
 from .auth import get_current_user, verify_password, get_password_hash
+
+
+templates = Jinja2Templates(directory='templates/')
 
 router = APIRouter(
     prefix='/users',
@@ -32,6 +36,7 @@ class UserVerification(BaseModel):
     user_name: str
     password: str
     new_password: str
+
 
 
 @router.get('/')
