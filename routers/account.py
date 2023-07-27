@@ -36,8 +36,8 @@ async def get_account_info(request: Request, db: Session = Depends(get_db)):
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url='/auth', status_code=status.HTTP_302_FOUND)
-    current_user = db.query(models.User).filter(models.User.id == user.get('user_id')).first()
-    return templates.TemplateResponse('account_info.html', {'request': request, 'current_user': current_user, 'user': user})
+    user = db.query(models.User).filter(models.User.id == user.get('user_id')).first()
+    return templates.TemplateResponse('account_info.html', {'request': request, 'user': user})
 
 
 @router.post('/account_info', response_class=HTMLResponse)
@@ -46,10 +46,10 @@ async def post_account_info(request: Request, email: str = Form(...), db: Sessio
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url='/auth', status_code=status.HTTP_302_FOUND)
-    user_model = db.query(models.User).filter(models.User.id == user.get('user_id')).first()
-    user_model.email = email
-    db.add(user_model)
+    user = db.query(models.User).filter(models.User.id == user.get('user_id')).first()
+    user.email = email
+    db.add(user)
     db.commit()
 
     msg = 'Данные изменены'
-    return templates.TemplateResponse('account_info.html', {'request': request, 'current_user': user_model, 'msg': msg})
+    return templates.TemplateResponse('account_info.html', {'request': request, 'user': user,  'msg': msg})

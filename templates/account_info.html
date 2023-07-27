@@ -12,11 +12,14 @@
             </div>
             {% endif %}
             <form method="post">
-                <div class="form-group">
-                    <label>Title</label>
-                    <input type="text" class="form-control" name="email" value="{{ current_user.email }}" required>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="email" class="form-control" name="email" value="{{ user.email }}" required
+                               placeholder="example@mail.com">
+                    </div>
                 </div>
-                <button type="submit" class="btn btn-danger">Изменить данные?</button>
+                <button type="submit" class="btn btn-info">Изменить данные?</button>
             </form>
         </div>
     </div>

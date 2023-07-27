@@ -98,7 +98,6 @@ async def get_current_user(request: Request):
         raise HTTPException(status_code=404, detail='User not found')
 
 
-
 @router.post('/token')
 async def login_for_access_token(response: Response, form_data: OAuth2PasswordRequestForm = Depends(),
                                  db: Session = Depends(get_db)):
@@ -158,9 +157,11 @@ async def registration_page(request: Request):
 
 @router.post('/register', response_class=HTMLResponse)
 async def register_user(request: Request, email: str = Form(...),
-                        user_name: str = Form(...), firstname: str = Form(...),
-                        lastname: str = Form(...), password: str = Form(...),
-                        password2: str = Form(...), db: Session = Depends(get_db)):
+                        user_name: str = Form(...), first_name: str = Form(...),
+                        last_name: str = Form(...), password: str = Form(...),
+                        password2: str = Form(...), company_name: str = Form(...),
+                        phone_number: str = Form(...),
+                        db: Session = Depends(get_db)):
     validation1 = db.query(models.User).filter(models.User.user_name == user_name).first()
     validation2 = db.query(models.User).filter(models.User.email == email).first()
 
@@ -171,8 +172,10 @@ async def register_user(request: Request, email: str = Form(...),
     user_model = models.User()
     user_model.user_name = user_name
     user_model.email = email
-    user_model.firs_tname = firstname
-    user_model.last_name = lastname
+    user_model.first_name = first_name
+    user_model.last_name = last_name
+    user_model.company_name = company_name
+    user_model.phone_number = phone_number
 
     hash_password = get_password_hash(password)
     user_model.hashed_password = hash_password
