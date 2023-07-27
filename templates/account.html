@@ -53,9 +53,16 @@
                     </div>
                 </div>
                 <button type="submit" class="btn btn-info">Сохранить</button>
-                <button onclick="window.location.href='/account/delete/{{ user.id }}'"
+                <button onclick="delete_user('{{ user.id }}'); return false;"
                         type="button" class="btn btn-danger">Удалить пользователя
                 </button>
+                <script>
+                    function delete_user(user_id) {
+                        if (window.confirm('Пользователь будет удален?')) {
+                            window.location.href = '/account/delete/'+user_id;
+                        }
+                    }
+                </script>
             </form>
         </div>
     </div>
