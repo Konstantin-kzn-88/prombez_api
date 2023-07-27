@@ -134,7 +134,7 @@ async def login(request: Request, db: Session = Depends(get_db)):
                                                             db=db)
 
         if not validate_user_cookie:
-            msg = 'Incorrect user_name or Login'
+            msg = 'Неправильный логин или пароль'
             return templates.TemplateResponse('login.html', {'request': request, 'msg': msg})
         return response
     except HTTPException:
@@ -144,7 +144,7 @@ async def login(request: Request, db: Session = Depends(get_db)):
 
 @router.get('/logout')
 async def logout(request: Request):
-    msg = 'Logout Successful'
+    msg = 'Успешный выход из аккаунта'
     response = templates.TemplateResponse('login.html', {'request': request, 'msg': msg})
     response.delete_cookie(key='access_token')
     return response
@@ -183,5 +183,5 @@ async def register_user(request: Request, email: str = Form(...),
     db.add(user_model)
     db.commit()
 
-    msg = 'User successfully created'
+    msg = 'Пользователь успешно создан'
     return templates.TemplateResponse('login.html', {'request': request, 'msg': msg})
