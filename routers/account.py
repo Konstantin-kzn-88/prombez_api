@@ -13,14 +13,14 @@ import models
 from fastapi.responses import HTMLResponse
 
 router = APIRouter(
-    prefix='/account',
-    tags=['account'],
+    prefix='/users_account',
+    tags=['users_account'],
     responses={404: {'descrition': 'Not found'}}
 
 )
 
 models.Base.metadata.create_all(bind=engine)
-templates = Jinja2Templates(directory='templates/')
+templates = Jinja2Templates(directory='templates')
 
 
 def get_db():
@@ -37,7 +37,7 @@ async def get_account(request: Request, db: Session = Depends(get_db)):
     if user is None:
         return RedirectResponse(url='/auth', status_code=status.HTTP_302_FOUND)
     user = db.query(models.User).filter(models.User.id == user.get('user_id')).first()
-    return templates.TemplateResponse('account.html', {'request': request, 'user': user})
+    return templates.TemplateResponse('docs_app/account.html', {'request': request, 'user': user})
 
 
 @router.post('/', response_class=HTMLResponse)
@@ -61,7 +61,7 @@ async def post_account(request: Request,
     db.commit()
 
     msg = 'Данные изменены'
-    return templates.TemplateResponse('account.html', {'request': request, 'user': user, 'msg': msg})
+    return templates.TemplateResponse('docs_app/account.html', {'request': request, 'user': user, 'msg': msg})
 
 @router.get('/delete/{user_id}')
 async def delete_account(request: Request, user_id: int, db: Session = Depends(get_db)):
@@ -76,7 +76,7 @@ async def delete_account(request: Request, user_id: int, db: Session = Depends(g
     db.commit()
 
     msg = 'Пользователь успешно удален'
-    response = templates.TemplateResponse('login.html', {'request': request, 'msg': msg})
+    response = templates.TemplateResponse('auth/login.html', {'request': request, 'msg': msg})
     response.delete_cookie(key='access_token')
     return response
 

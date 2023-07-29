@@ -119,7 +119,7 @@ def successful_response(status_code: int):
 
 @router.get('/', response_class=HTMLResponse)
 async def authentication_page(request: Request):
-    return templates.TemplateResponse('login.html', {'request': request})
+    return templates.TemplateResponse('auth/login.html', {'request': request})
 
 
 @router.post('/', response_class=HTMLResponse)
@@ -135,24 +135,24 @@ async def login(request: Request, db: Session = Depends(get_db)):
 
         if not validate_user_cookie:
             msg = 'Неправильный логин или пароль'
-            return templates.TemplateResponse('login.html', {'request': request, 'msg': msg})
+            return templates.TemplateResponse('auth/login.html', {'request': request, 'msg': msg})
         return response
     except HTTPException:
         msg = 'Uncnow Error'
-        return templates.TemplateResponse('login.html', {'request': request, 'msg': msg})
+        return templates.TemplateResponse('auth/login.html', {'request': request, 'msg': msg})
 
 
 @router.get('/logout')
 async def logout(request: Request):
     msg = 'Успешный выход из аккаунта'
-    response = templates.TemplateResponse('login.html', {'request': request, 'msg': msg})
+    response = templates.TemplateResponse('auth/login.html', {'request': request, 'msg': msg})
     response.delete_cookie(key='access_token')
     return response
 
 
 @router.get('/register', response_class=HTMLResponse)
 async def registration_page(request: Request):
-    return templates.TemplateResponse('register.html', {'request': request})
+    return templates.TemplateResponse('auth/register.html', {'request': request})
 
 
 @router.post('/register', response_class=HTMLResponse)
@@ -167,7 +167,7 @@ async def register_user(request: Request, email: str = Form(...),
 
     if password != password2 or validation1 is not None or validation2 is not None:
         msg = 'Invalid registration request'
-        return templates.TemplateResponse('register.html', {'request': request, 'msg': msg})
+        return templates.TemplateResponse('auth/register.html', {'request': request, 'msg': msg})
 
     user_model = models.User()
     user_model.user_name = user_name
@@ -184,4 +184,4 @@ async def register_user(request: Request, email: str = Form(...),
     db.commit()
 
     msg = 'Пользователь успешно создан'
-    return templates.TemplateResponse('login.html', {'request': request, 'msg': msg})
+    return templates.TemplateResponse('auth/login.html', {'request': request, 'msg': msg})

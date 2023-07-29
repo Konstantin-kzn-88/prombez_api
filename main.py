@@ -23,5 +23,5 @@ app.include_router(account.router)
 async def home(request: Request):
     user = await get_current_user(request)
     if user is None:
-        return templates.TemplateResponse('start_page.html', {'request': request})
-    return templates.TemplateResponse('start_page.html', {'request': request, 'user': user})
+        return templates.TemplateResponse('index.html', {'request': request})
+    return templates.TemplateResponse('index.html', {'request': request, 'user': user})

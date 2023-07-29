@@ -1,11 +1,11 @@
-{% include 'layout.html' %}
+{% include 'includes/layout.html' %}
 
 <div class="container">
     <div class="card">
         <div class="card-body">
             <div class="row featurette">
                 <div class="col-md-7">
-                    <h2 class="featurette-heading">Тариф №1. <span class="text-muted">Наиболее покупаемый.</span>
+                    <h2 class="featurette-heading">First featurette heading. <span class="text-muted">It’ll blow your mind.</span>
                     </h2>
 
                     <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
@@ -16,33 +16,30 @@
                         pretium vulputate sapien nec sagittis aliquam. Ultrices tincidunt arcu non sodales.
                     </p>
 
-                    <h2 class="featurette-heading">Тариф №2. <span class="text-muted">Самый дорогой.</span>
-                    </h2>
-
-
                     <p class="lead">
                         Risus pretium quam vulputate dignissim suspendisse in est ante. Amet consectetur adipiscing elit
                         duis tristique sollicitudin. Ultricies tristique nulla aliquet enim tortor. Vivamus arcu felis
                         bibendum ut tristique et egestas quis ipsum. Nulla pharetra diam sit amet. Risus in hendrerit
                         gravida rutrum quisque non tellus orci. Ornare arcu dui vivamus arcu felis bibendum ut
                         tristique. Leo urna molestie at elementum eu facilisis sed odio morbi. Id aliquet risus feugiat
-                        in ante metus dictum at. Nunc sed id semper risus. Lectus vestibulum mattis ullamcorper velit
-                        sed. Sit amet mauris commodo quis imperdiet. Purus non enim praesent elementum. Purus in mollis
-                        nunc sed id. Nulla facilisi etiam dignissim diam quis enim lobortis scelerisque. Sem viverra
-                        aliquet eget sit amet tellus cras adipiscing. Leo in vitae turpis massa sed elementum tempus.
-                        Netus et malesuada fames ac turpis.
+                        in ante metus dictum at.
                     </p>
 
                 </div>
                 <div class="col-md-5">
                     <img
-                            src="{{ url_for('static', path='/images/price.png') }}"
+                            src="{{ url_for('static', path='/images/computer.png') }}"
                             alt="triangle with all three sides equal"
                             height="500px"
                             width="500px"/>
                 </div>
             </div>
         </div>
-
+        <div class="card-footer text-muted">
+            <a href="auth/register"> Зарегистрироваться? </a>
+        </div>
+        <div class="card-footer text-muted">
+            <a href="/auth"> Войти в аккаунт? </a>
+        </div>
     </div>
 </div>

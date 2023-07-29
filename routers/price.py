@@ -13,12 +13,12 @@ router = APIRouter(
 
 )
 
-templates = Jinja2Templates(directory='templates/')
+templates = Jinja2Templates(directory='templates')
 
 
 @router.get('/')
 async def start_page(request: Request):
     user = await get_current_user(request)
     if user is None:
-        return templates.TemplateResponse('price.html', {'request': request})
-    return templates.TemplateResponse('price.html', {'request': request, 'user': user})
+        return templates.TemplateResponse('price/price.html', {'request': request})
+    return templates.TemplateResponse('price/price.html', {'request': request, 'user': user})

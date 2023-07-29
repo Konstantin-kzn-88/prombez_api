@@ -12,7 +12,7 @@
 </head>
 <body>
 
-{% include 'navbar.html' %}
+{% include 'includes/navbar.html' %}
 
 <div class="container">
     {% block content %}
@@ -27,5 +27,5 @@
 <script src="{{ url_for('static', path='/js/popper.js') }}"></script>
 <script src="{{ url_for('static', path='/js/bootstrap.js') }}"></script>
 </body>
-{% include 'footer.html' %}
+{% include 'includes/footer.html' %}
 </html>
