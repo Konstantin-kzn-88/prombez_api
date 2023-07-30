@@ -19,6 +19,47 @@
                         <input type="text" class="form-control" name="legal_address" placeholder="Юридический адрес"
                                value="{{ organization.legal_address }}" required>
                     </div>
+
+                    <div class="form-group col-md-6">
+                        <label>Должность руководителя</label>
+                        <input type="text" class="form-control" name="name_position_director"
+                               value="{{ organization.name_position_director }}" placeholder="Генеральный директор"
+                               required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Ф.И.О.</label>
+                        <input type="text" class="form-control" name="name_director" placeholder="Иванов И.И."
+                               value="{{ organization.name_director }}" required>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label>Должность тех.руководителя</label>
+                        <input type="text" class="form-control" name="name_position_tech_director"
+                               value="{{ organization.name_position_tech_director }}" placeholder="Главный инженер"
+                               required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Ф.И.О.</label>
+                        <input type="text" class="form-control" name="name_tech_director" placeholder="Петров И.И."
+                               value="{{ organization.name_tech_director }}" required>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label>Телефон организации</label>
+                        <input type="tel" class="form-control"
+                               name="telephone" required placeholder="+7 (922) 258-89-89"
+                               pattern="[\+]\d{1}\s[\(]\d{3}[\)]\s\d{3}[\-]\d{2}[\-]\d{2}"
+                               minlength="18" maxlength="18"
+                               value="{{ organization.telephone }}" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Email организации</label>
+                        <input type="email" class="form-control" name="email" required
+                               placeholder="example@mail.com"
+                               value="{{ organization.email }}" required>
+                    </div>
+
+
                 </div>
                 <button type="submit" class="btn btn-primary">Сохранить</button>
                 <button onclick="delete_org('{{ organization.id }}'); return false;"

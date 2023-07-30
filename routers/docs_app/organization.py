@@ -37,7 +37,8 @@ async def get_all_organizsations(request: Request, db: Session = Depends(get_db)
     if user is None:
         return RedirectResponse(url='/auth', status_code=status.HTTP_302_FOUND)
     organizations = db.query(models.Organization).filter(models.Organization.user_id == user.get('user_id')).all()
-    return templates.TemplateResponse('docs_app/organizations.html', {'request': request, 'organizations': organizations, 'user': user})
+    return templates.TemplateResponse('docs_app/organizations.html',
+                                      {'request': request, 'organizations': organizations, 'user': user})
 
 
 @router.get('/edit/{org_id}', response_class=HTMLResponse)
@@ -46,18 +47,31 @@ async def organization_edit(request: Request, org_id: int, db: Session = Depends
     if user is None:
         return RedirectResponse(url='/auth', status_code=status.HTTP_302_FOUND)
     organization = db.query(models.Organization).filter(models.Organization.id == org_id).first()
-    return templates.TemplateResponse('docs_app/organizations_edit.html', {'request': request, 'organization': organization, 'user': user})
+    return templates.TemplateResponse('docs_app/organizations_edit.html',
+                                      {'request': request, 'organization': organization, 'user': user})
+
 
 @router.post('/edit/{org_id}', response_class=HTMLResponse)
 async def post_account(request: Request, org_id: int,
-                            name_organization: str = Form(...), legal_address: str = Form(...),
-                            db: Session = Depends(get_db)):
+                       name_organization: str = Form(...), legal_address: str = Form(...),
+                       name_position_director: str = Form(...), name_director: str = Form(...),
+                       name_position_tech_director: str = Form(...), name_tech_director: str = Form(...),
+                       telephone: str = Form(...), email: str = Form(...),
+                       db: Session = Depends(get_db)):
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url='/auth', status_code=status.HTTP_302_FOUND)
+
     organization = db.query(models.Organization).filter(models.Organization.id == org_id).first()
+
     organization.name_organization = name_organization
     organization.legal_address = legal_address
+    organization.name_position_director = name_position_director
+    organization.name_director = name_director
+    organization.name_position_tech_director = name_position_tech_director
+    organization.name_tech_director = name_tech_director
+    organization.telephone = telephone
+    organization.email = email
 
     db.add(organization)
     db.commit()
@@ -80,7 +94,6 @@ async def organization_delete(request: Request, org_id: int, db: Session = Depen
     return RedirectResponse(url='/user_organizations', status_code=status.HTTP_302_FOUND)
 
 
-
 @router.get('/add', response_class=HTMLResponse)
 async def organization_add(request: Request):
     user = await get_current_user(request)
@@ -91,14 +104,23 @@ async def organization_add(request: Request):
 
 @router.post('/add', response_class=HTMLResponse)
 async def post_account(request: Request,
-                            name_organization: str = Form(...), legal_address: str = Form(...),
-                            db: Session = Depends(get_db)):
+                       name_organization: str = Form(...), legal_address: str = Form(...),
+                       name_position_director: str = Form(...), name_director: str = Form(...),
+                       name_position_tech_director: str = Form(...), name_tech_director: str = Form(...),
+                       telephone: str = Form(...), email: str = Form(...),
+                       db: Session = Depends(get_db)):
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url='/auth', status_code=status.HTTP_302_FOUND)
     organization_model = models.Organization()
     organization_model.name_organization = name_organization
     organization_model.legal_address = legal_address
+    organization_model.name_position_director = name_position_director
+    organization_model.name_director = name_director
+    organization_model.name_position_tech_director = name_position_tech_director
+    organization_model.name_tech_director = name_tech_director
+    organization_model.telephone = telephone
+    organization_model.email = email
     organization_model.user_id = user.get('user_id')
 
     db.add(organization_model)
