@@ -1,6 +1,6 @@
 import sys
 
-sys.path.append('..')
+sys.path.append('../..')
 
 from fastapi import APIRouter, Request
 from fastapi.templating import Jinja2Templates

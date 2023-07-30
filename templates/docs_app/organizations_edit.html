@@ -1,0 +1,37 @@
+{% include 'includes/layout.html' %}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            Редактирование данных организации
+        </div>
+        <div class="card-body">
+            <form method="post">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Наименование организации</label>
+                        <input type="text" class="form-control" name="name_organization"
+                               value="{{ organization.name_organization }}" placeholder="Наименование организации"
+                               required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Юридический адрес</label>
+                        <input type="text" class="form-control" name="legal_address" placeholder="Юридический адрес"
+                               value="{{ organization.legal_address }}" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Сохранить</button>
+                <button onclick="delete_org('{{ organization.id }}'); return false;"
+                        type="button" class="btn btn-danger">Удалить
+                </button>
+                <script>
+                    function delete_org(organization_id) {
+                        if (window.confirm('Организация будет удалена?')) {
+                            window.location.href = '/user_organizations/delete/' + organization_id;
+                        }
+                    }
+                </script>
+            </form>
+        </div>
+    </div>
+</div>

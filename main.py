@@ -1,7 +1,9 @@
 from fastapi import FastAPI, Request
 import models
 from database import engine
-from routers import auth, users, price, account
+from routers import auth
+from routers.docs_app import account, organization
+from routers.price import price
 from starlette.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from routers.auth import get_current_user
@@ -15,9 +17,9 @@ models.Base.metadata.create_all(bind=engine)
 app.mount('/static', StaticFiles(directory='static'), name='static')
 
 app.include_router(auth.router)
-app.include_router(users.router)
 app.include_router(price.router)
 app.include_router(account.router)
+app.include_router(organization.router)
 
 @app.get("/")
 async def home(request: Request):
