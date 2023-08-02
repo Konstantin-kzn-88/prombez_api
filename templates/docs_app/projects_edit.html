@@ -24,7 +24,33 @@
                     <label>Описание проекта</label>
                     <textarea class="form-control" rows="3" name="description_project" required>{{ project.description_project }}</textarea>
                 </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6 was-validated">
+                        <select class="custom-select" name="org_id" required>
+                            <option value="">Выберите организацию</option>
+                            {% for org in all_organizations %}
+                            <option {% if org.id== project.org_id %} selected="selected" {% endif %} value={{org.id}}>{{
+                                org.name_organization }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <div class="invalid-feedback">Example invalid custom select feedback</div>
+                    </div>
+                </div>
+
+
                 <button type="submit" class="btn btn-primary">Сохранить</button>
+                <button onclick="delete_project('{{ project.id }}'); return false;"
+                        type="button" class="btn btn-danger">Удалить
+                </button>
+                <script>
+                    function delete_project(project_id) {
+                        if (window.confirm('Проект будет удален?')) {
+                            window.location.href = '/projects/delete/' + project_id;
+                        }
+                    }
+                </script>
             </form>
         </div>
     </div>
