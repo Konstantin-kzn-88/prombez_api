@@ -52,7 +52,7 @@ async def organization_edit(request: Request, org_id: int, db: Session = Depends
 
 
 @router.post('/edit/{org_id}', response_class=HTMLResponse)
-async def post_account(request: Request, org_id: int,
+async def post_organization(request: Request, org_id: int,
                        name_organization: str = Form(...), legal_address: str = Form(...),
                        name_position_director: str = Form(...), name_director: str = Form(...),
                        name_position_tech_director: str = Form(...), name_tech_director: str = Form(...),
