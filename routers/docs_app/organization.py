@@ -37,7 +37,7 @@ async def get_all_organizsations(request: Request, db: Session = Depends(get_db)
     if user is None:
         return RedirectResponse(url='/auth', status_code=status.HTTP_302_FOUND)
     organizations = db.query(models.Organization).filter(models.Organization.user_id == user.get('user_id')).all()
-    return templates.TemplateResponse('docs_app/organizations.html',
+    return templates.TemplateResponse('docs_app/organizations/organizations.html',
                                       {'request': request, 'organizations': organizations, 'user': user})
 
 
@@ -47,7 +47,7 @@ async def organization_edit(request: Request, org_id: int, db: Session = Depends
     if user is None:
         return RedirectResponse(url='/auth', status_code=status.HTTP_302_FOUND)
     organization = db.query(models.Organization).filter(models.Organization.id == org_id).first()
-    return templates.TemplateResponse('docs_app/organizations_edit.html',
+    return templates.TemplateResponse('docs_app/organizations/organizations_edit.html',
                                       {'request': request, 'organization': organization, 'user': user})
 
 
@@ -99,7 +99,7 @@ async def organization_add(request: Request):
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url='/auth', status_code=status.HTTP_302_FOUND)
-    return templates.TemplateResponse('docs_app/organizations_add.html', {'request': request, 'user': user})
+    return templates.TemplateResponse('docs_app/organizations/organizations_add.html', {'request': request, 'user': user})
 
 
 @router.post('/add', response_class=HTMLResponse)

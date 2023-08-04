@@ -1,7 +1,5 @@
 import sys
 
-import database
-
 sys.path.append('../..')
 
 from starlette import status
@@ -35,12 +33,12 @@ def get_db():
 
 
 @router.get('/add')
-async def get_select_organization(request: Request, db: Session = Depends(get_db)):
+async def post_account(request: Request, db: Session = Depends(get_db)):
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url='/auth', status_code=status.HTTP_302_FOUND)
     all_organizations = db.query(models.Organization).filter(models.Organization.user_id == user.get('user_id')).all()
-    return templates.TemplateResponse('docs_app/projects_add.html',
+    return templates.TemplateResponse('docs_app/projects/projects_add.html',
                                       {'request': request, 'all_organizations': all_organizations, 'user': user})
 
 @router.post('/add', response_class=HTMLResponse)
@@ -70,7 +68,7 @@ async def get_select_organization(request: Request, db: Session = Depends(get_db
         return RedirectResponse(url='/auth', status_code=status.HTTP_302_FOUND)
     all_organizations = db.query(models.Organization).filter(models.Organization.user_id == user.get('user_id')).all()
 
-    return templates.TemplateResponse('docs_app/projects.html',
+    return templates.TemplateResponse('docs_app/projects/projects.html',
                                       {'request': request, 'all_organizations': all_organizations, 'user': user})
 
 
@@ -81,7 +79,7 @@ async def get_all_projects_for_organization(request: Request, org_id: int, db: S
         return RedirectResponse(url='/auth', status_code=status.HTTP_302_FOUND)
     projects = db.query(models.Project).filter(models.Project.org_id == org_id).all()
     current_organization = db.query(models.Organization).filter(models.Organization.id == org_id).first()
-    return templates.TemplateResponse('docs_app/projects_for_organization.html',
+    return templates.TemplateResponse('docs_app/projects/projects_for_organization.html',
                                       {'request': request, 'projects': projects,
                                        'current_organization': current_organization, 'user': user})
 
@@ -93,7 +91,7 @@ async def project_edit(request: Request, project_id: int, db: Session = Depends(
         return RedirectResponse(url='/auth', status_code=status.HTTP_302_FOUND)
     project = db.query(models.Project).filter(models.Project.id == project_id).first()
     all_organizations = db.query(models.Organization).filter(models.Organization.user_id == user.get('user_id')).all()
-    return templates.TemplateResponse('docs_app/projects_edit.html',
+    return templates.TemplateResponse('docs_app/projects/projects_edit.html',
                                       {'request': request, 'project': project, 'all_organizations': all_organizations,
                                        'user': user})
 
