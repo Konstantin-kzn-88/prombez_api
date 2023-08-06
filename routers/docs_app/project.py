@@ -31,21 +31,26 @@ def get_db():
         db.close()
 
 
-
 @router.get('/add')
-async def post_account(request: Request, db: Session = Depends(get_db)):
+async def get_add_post_project(request: Request, db: Session = Depends(get_db)):
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url='/auth', status_code=status.HTTP_302_FOUND)
     all_organizations = db.query(models.Organization).filter(models.Organization.user_id == user.get('user_id')).all()
+    current_organization = db.query(models.User, models.Organization).filter(
+        models.User.id == user.get('user_id')).filter(models.Organization.user_id == user.get('user_id')).first()
+    all_objects = db.query(models.Object).filter(models.Object.org_id == current_organization[0].id).all()
     return templates.TemplateResponse('docs_app/projects/projects_add.html',
-                                      {'request': request, 'all_organizations': all_organizations, 'user': user})
+                                      {'request': request, 'all_organizations': all_organizations,
+                                       'all_objects': all_objects, 'user': user})
+
 
 @router.post('/add', response_class=HTMLResponse)
-async def post_account(request: Request,
-                       name_project: str = Form(...), code_project: str = Form(...),
-                       description_project: str = Form(...), org_id: str = Form(...),
-                       db: Session = Depends(get_db)):
+async def post_add_project(request: Request,
+                           name_project: str = Form(...), code_project: str = Form(...),
+                           description_project: str = Form(...), org_id: str = Form(...),
+                           object_id: str = Form(...),
+                           db: Session = Depends(get_db)):
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url='/auth', status_code=status.HTTP_302_FOUND)
@@ -54,12 +59,13 @@ async def post_account(request: Request,
     project_model.code_project = code_project
     project_model.description_project = description_project
     project_model.org_id = org_id
-    project_model.user_id = user.get('user_id')
+    project_model.object_id = object_id
 
     db.add(project_model)
     db.commit()
 
     return RedirectResponse(url='/projects', status_code=status.HTTP_302_FOUND)
+
 
 @router.get('/')
 async def get_select_organization(request: Request, db: Session = Depends(get_db)):
@@ -91,16 +97,19 @@ async def project_edit(request: Request, project_id: int, db: Session = Depends(
         return RedirectResponse(url='/auth', status_code=status.HTTP_302_FOUND)
     project = db.query(models.Project).filter(models.Project.id == project_id).first()
     all_organizations = db.query(models.Organization).filter(models.Organization.user_id == user.get('user_id')).all()
+    current_organization = db.query(models.User, models.Organization).filter(
+        models.User.id == user.get('user_id')).filter(models.Organization.user_id == user.get('user_id')).first()
+    all_objects = db.query(models.Object).filter(models.Object.org_id == current_organization[0].id).all()
     return templates.TemplateResponse('docs_app/projects/projects_edit.html',
                                       {'request': request, 'project': project, 'all_organizations': all_organizations,
-                                       'user': user})
+                                       'all_objects': all_objects, 'user': user})
 
 
 @router.post('/edit/{project_id}', response_class=HTMLResponse)
 async def post_project(request: Request, project_id: int,
                        name_project: str = Form(...), code_project: str = Form(...),
                        description_project: str = Form(...),
-                       org_id: str = Form(...),
+                       org_id: str = Form(...), object_id: str = Form(...),
                        db: Session = Depends(get_db)):
     user = await get_current_user(request)
     if user is None:
@@ -112,6 +121,7 @@ async def post_project(request: Request, project_id: int,
     project.code_project = code_project
     project.description_project = description_project
     project.org_id = org_id
+    project.object_id = object_id
 
     db.add(project)
     db.commit()
@@ -135,5 +145,3 @@ async def project_delete(request: Request, project_id: int, db: Session = Depend
     db.commit()
 
     return RedirectResponse(url=f'/projects/{org_id}', status_code=status.HTTP_302_FOUND)
-
-

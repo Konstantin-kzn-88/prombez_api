@@ -11,13 +11,12 @@
                     <div class="form-group col-md-6">
                         <label>Наименование объекта</label>
                         <input type="text" class="form-control" name="name_object"
-                               value="{{ object.name_object }}" placeholder="Наименование объекта"
+                               placeholder="Наименование объекта"
                                required>
                     </div>
                     <div class="form-group col-md-6">
                         <label>Адрес объекта</label>
-                        <input type="text" class="form-control" name="address_object" placeholder="Адрес объекта"
-                               value="{{ object.address_object }}" required>
+                        <input type="text" class="form-control" name="address_object" placeholder="Адрес объекта" required>
                     </div>
                 </div>
 
@@ -25,7 +24,7 @@
                     <div class="form-group col-md-6">
                         <label>Рег. номер</label>
                         <input type="text" class="form-control" name="reg_number_object"
-                               value="{{ object.reg_number_object }}" placeholder="Рег. номер"
+                               placeholder="Рег. номер"
                                required>
                     </div>
                     <div class="form-group col-md-6 was-validated">
@@ -33,8 +32,7 @@
                         <select class="custom-select" name="class_object" required>
                             <option value="">Выберите класс опасности</option>
                             {% for index in range(1,5) %}
-                            <option {% if object.class_object | int == index %} selected="selected" {% endif %} value={{index}}>{{
-                                index }}
+                            <option value={{index}}>{{ index }}
                             </option>
                             {% endfor %}
                         </select>
@@ -46,7 +44,7 @@
                         <select class="custom-select" name="org_id" required>
                             <option value="">Выберите организацию</option>
                             {% for org in all_organizations %}
-                            <option {% if org.id== object.org_id %} selected="selected" {% endif %} value={{org.id}}>{{
+                            <option value={{org.id}}>{{
                                 org.name_organization }}
                             </option>
                             {% endfor %}
@@ -54,19 +52,7 @@
                         <div class="invalid-feedback">Должна быть выбрана организация</div>
                     </div>
                 </div>
-
-
                 <button type="submit" class="btn btn-primary">Сохранить</button>
-                <button onclick="delete_project('{{ object.id }}'); return false;"
-                        type="button" class="btn btn-danger">Удалить
-                </button>
-                <script>
-                    function delete_project(object_id) {
-                        if (window.confirm('Объект будет удален?')) {
-                            window.location.href = '/objects/delete/' + object_id;
-                        }
-                    }
-                </script>
             </form>
         </div>
     </div>

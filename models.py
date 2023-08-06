@@ -43,15 +43,6 @@ class Organization(Base):
     projects = relationship("Project", back_populates="organizations", cascade="all, delete-orphan")
 
 
-# Ассоциативная таблица Object-Project для двусторонней связи многие-ко-многим
-object_project = Table(
-    "association_table",
-    Base.metadata,
-    Column("object_id", ForeignKey("object_table.id"), primary_key=True),
-    Column("project_id", ForeignKey("project_table.id"), primary_key=True),
-)
-
-
 class Object(Base):
     __tablename__ = "object_table"
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -63,12 +54,11 @@ class Object(Base):
     reg_number_object = Column(String, unique=True)
     # Класс опасности
     class_object = Column(String)
-    # Отношение к таблице Project (многие-ко-многим)
-    projects = relationship("Project", secondary=object_project, back_populates="objects")
+    # Отношение к таблице Project один-к-одному
+    projects = relationship("Project", back_populates="objects", uselist=False)
     # Отношение к таблице Organization
     org_id = Column(Integer, ForeignKey("org_table.id"))
     organizations = relationship("Organization", back_populates="objects")
-
 
 class Project(Base):
     __tablename__ = "project_table"
@@ -82,14 +72,16 @@ class Project(Base):
     # Отношение к таблице Organization
     org_id = Column(Integer, ForeignKey("org_table.id"))
     organizations = relationship("Organization", back_populates="projects")
-    # Отношение к таблице Object (многие-ко-многим)
-    objects = relationship("Object", secondary=object_project, back_populates="projects")
+    # Отношение один-к-одному
+    object_id = Column(Integer, ForeignKey("object_table.id"))
+    objects = relationship("Object", back_populates="projects")
     # Отношение один-ко-многим к таблице Pipeline
     pipelines = relationship("Pipeline", back_populates="projects", cascade="all, delete-orphan")
     # Отношение один-ко-многим к таблице Device
     devices = relationship("Device", back_populates="projects", cascade="all, delete-orphan")
     # Отношение один-ко-многим к таблице Pump
     pumps = relationship("Pump", back_populates="projects", cascade="all, delete-orphan")
+
 
 
 class Pipeline(Base):
