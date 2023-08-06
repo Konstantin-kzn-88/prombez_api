@@ -2,7 +2,7 @@ from fastapi import FastAPI, Request
 import models
 from database import engine
 from routers import auth
-from routers.docs_app import account, organization, project, object
+from routers.docs_app import account, organization, project, object, substance
 from routers.price import price
 from starlette.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -22,6 +22,7 @@ app.include_router(account.router)
 app.include_router(organization.router)
 app.include_router(project.router)
 app.include_router(object.router)
+app.include_router(substance.router)
 
 @app.get("/")
 async def home(request: Request):

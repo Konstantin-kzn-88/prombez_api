@@ -98,6 +98,7 @@ async def get_current_user(request: Request):
         raise HTTPException(status_code=404, detail='User not found')
 
 
+
 @router.post('/token')
 async def login_for_access_token(response: Response, form_data: OAuth2PasswordRequestForm = Depends(),
                                  db: Session = Depends(get_db)):
