@@ -47,11 +47,11 @@ class Object(Base):
     __tablename__ = "object_table"
     id = Column(Integer, primary_key=True, autoincrement=True)
     # Наименование объекта (опасного производственного объекта)
-    name_object = Column(String, unique=True)
+    name_object = Column(String)
     # Адрес объекта
     address_object = Column(String)
     # Регистрационный номер
-    reg_number_object = Column(String, unique=True)
+    reg_number_object = Column(String)
     # Класс опасности
     class_object = Column(String)
     # Отношение к таблице Project один-к-одному

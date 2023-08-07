@@ -237,10 +237,10 @@ with Session(bind=engine) as session:
 #     session.commit()
 #
 #
-with Session(bind=engine) as session:
-    usr = session.query(Object).filter(Object.id == 1).one()
-    session.delete(usr)
-    session.commit()
+# with Session(bind=engine) as session:
+#     usr = session.query(Object).filter(Object.id == 1).one()
+#     session.delete(usr)
+#     session.commit()
 
 # _____________________________________________
 # Удаление многие ко многим

@@ -3,7 +3,7 @@
 <div class="container">
     <div class="card">
         <div class="card-header">
-            Редактирование свойств веществ
+            Добавление нового вещества
         </div>
         <div class="card-body">
             <form method="post">
@@ -12,69 +12,67 @@
                     <div class="form-group col-md-6">
                         <label>Наименование вещества</label>
                         <input type="text" class="form-control" name="sub_name"
-                               value="{{ sub.sub_name }}" placeholder="Наименование вещества"
+                               placeholder="Наименование вещества"
                                required>
                     </div>
                     <div class="form-group col-md-6">
                         <label>Плотность жидкой фазы, кг/м3</label>
                         <input type="number" min="600" step="1" class="form-control" name="sub_density_liguid"
                                placeholder="Плотность жидкой фазы, кг/м3"
-                               value="{{ sub.sub_density_liguid }}" required>
+                               required>
                     </div>
 
                     <div class="form-group col-md-6">
                         <label>Плотность газовой фазы, кг/м3</label>
                         <input type="number" min="0" step="0.01" class="form-control" name="sub_density_gas"
                                placeholder="Плотность газовой фазы, кг/м3"
-                               value="{{ sub.sub_density_gas }}" required>
+                               required>
                     </div>
                     <div class="form-group col-md-6">
                         <label>Мол.масса, кг/кмоль, кг/м3</label>
                         <input type="number" min="0" step="1" class="form-control" name="sub_mol_weight"
                                placeholder="Мол.масса, кг/кмоль"
-                               value="{{ sub.sub_mol_weight }}" required>
+                               required>
                     </div>
 
                     <div class="form-group col-md-6">
                         <label>Давление пара, кПа</label>
                         <input type="number" min="0" step="1" class="form-control" name="sub_steam_pressure"
                                placeholder="Давление пара, кПа"
-                               value="{{ sub.sub_steam_pressure }}" required>
+                               required>
                     </div>
                     <div class="form-group col-md-6">
                         <label>Температура вспышки, град С</label>
                         <input type="number" min="-100" step="1" class="form-control" name="sub_flash_temp"
                                placeholder="Температура вспышки, град С"
-                               value="{{ sub.sub_flash_temp }}" required>
+                               required>
                     </div>
 
                     <div class="form-group col-md-6">
                         <label>Температура кипения, град С</label>
                         <input type="number" min="-100" step="1" class="form-control" name="sub_boiling_temp"
                                placeholder="Температура кипения, град С"
-                               value="{{ sub.sub_boiling_temp }}" required>
+                               required>
                     </div>
                     <div class="form-group col-md-6">
                         <label>Теплота испарения, Дж/кг</label>
                         <input type="number" min="0" step="1" class="form-control" name="sub_evaporation_heat"
                                placeholder="Теплота испарения, Дж/кг"
-                               value="{{ sub.sub_evaporation_heat }}" required>
+                               required>
                     </div>
 
                     <div class="form-group col-md-6">
                         <label>Теплоемкость жидкости, Дж/(кг*К)</label>
                         <input type="number" min="0" step="1" class="form-control" name="sub_heat_capacity"
                                placeholder="Теплоемкость жидкости, Дж/(кг*К)"
-                               value="{{ sub.sub_heat_capacity }}" required>
+                               required>
                     </div>
                     <div class="form-group col-md-6 was-validated">
                         <label>Класс вещества (для взрыва)</label>
                         <select class="custom-select" name="sub_class" required>
                             <option value="">Выберите класс опасности</option>
                             {% for index in range(1,5) %}
-                            <option {% if sub.sub_class | int== index %} selected="selected" {% endif %}
-                                    value={{index}}>{{
-                                index }}
+                            <option value={{index}}>{{ index }}
                             </option>
                             {% endfor %}
                         </select>
@@ -84,18 +82,14 @@
                         <label>Теплота сгорания, кДж/кг</label>
                         <input type="number" min="0" step="1" class="form-control" name="sub_heat_combustion_temp"
                                placeholder="Теплота сгорания, кДж/кг"
-                               value="{{ sub.sub_heat_combustion_temp }}" required>
+                               required>
                     </div>
                     <div class="form-group col-md-6 was-validated">
                         <label>Параметр sigma, -</label>
                         <select class="custom-select" name="sub_sigma" required>
                             <option value="">Выберите параметр sigma</option>
-                            <option {% if sub.sub_sigma | int== 4 %} selected="selected" {% endif %}
-                                    value=4> 4
-                            </option>
-                            <option {% if sub.sub_sigma | int== 7 %} selected="selected" {% endif %}
-                                    value=7> 7
-                            </option>
+                            <option value=4> 4</option>
+                            <option value=7> 7</option>
                         </select>
                     </div>
 
@@ -103,35 +97,19 @@
                         <label>Энергозапас, -</label>
                         <select class="custom-select" name="sub_energy_level" required>
                             <option value="">Выберите параметр энергозапаса</option>
-                            <option {% if sub.sub_energy_level | int== 1 %} selected="selected" {% endif %}
-                                    value=1> 1
-                            </option>
-                            <option {% if sub.sub_energy_level | int== 2 %} selected="selected" {% endif %}
-                                    value=2> 2
-                            </option>
+                            <option value=1> 1</option>
+                            <option value=2> 2</option>
                         </select>
                     </div>
                     <div class="form-group col-md-6">
                         <label>НКПР, об.%</label>
                         <input type="number" min="0" step="0.01" class="form-control" name="sub_lower_conc"
                                placeholder="Нижний концентрационный предел взрываемости, об.%"
-                               value="{{ sub.sub_lower_conc }}" required>
+                               required>
                     </div>
-
 
                 </div>
                 <button type="submit" class="btn btn-primary">Сохранить</button>
-                <button onclick="delete_sub('{{ sub.id }}'); return false;"
-                        type="button" class="btn btn-danger">Удалить
-                </button>
-                <script>
-                    function delete_sub(sub_id) {
-                        if (window.confirm('Вещество будет удалено?')) {
-                            window.location.href = '/subs/delete/' + sub_id;
-                        }
-                    }
-                </script>
-
             </form>
         </div>
     </div>
