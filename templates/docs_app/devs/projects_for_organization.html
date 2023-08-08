@@ -1,0 +1,40 @@
+{% include 'includes/layout.html' %}
+
+<div class="container">
+    <div class="card text-center">
+        <div class="card-header">
+            <p class="font-weight-bold"> Проекты {{ current_organization.name_organization }}</p>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">№</th>
+                    <th scope="col">Наименование</th>
+                    <th scope="col">Шифр проекта</th>
+                    <th scope="col">Оборудование</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                {% for project in projects %}
+
+                <tr class="pointer">
+                    <td>{{ loop.index }}</td>
+                    <td>{{ project.name_project }}</td>
+                    <td>{{ project.code_project }}</td>
+                    <td>
+                        <button onclick="window.location.href='project/{{ project.id }}'" type="button" class="btn btn-info">
+                            -->
+                        </button>
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
