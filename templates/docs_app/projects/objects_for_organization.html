@@ -3,7 +3,7 @@
 <div class="container">
     <div class="card text-center">
         <div class="card-header">
-            Проекты пользователя
+            <p class="font-weight-bold"> Объекты {{ current_organization.name_organization }}</p>
         </div>
         <div class="card-body">
             <table class="table table-hover">
@@ -11,21 +11,22 @@
                 <tr>
                     <th scope="col">№</th>
                     <th scope="col">Наименование</th>
-                    <th scope="col">Адрес</th>
-                    <th scope="col">Объекты</th>
+                    <th scope="col">Регистрационный номер</th>
+                    <th scope="col">Проекты</th>
                 </tr>
                 </thead>
 
                 <tbody>
 
-                {% for org in all_organizations %}
+                {% for object in objects %}
 
                 <tr class="pointer">
                     <td>{{ loop.index }}</td>
-                    <td>{{ org.name_organization }}</td>
-                    <td>{{ org.legal_address }}</td>
+                    <td>{{ object.name_object }}</td>
+                    <td>{{ object.reg_number_object }}</td>
                     <td>
-                        <button onclick="window.location.href='/projects/objects-for-org={{ org.id }}'" type="button" class="btn btn-info">
+                        <button onclick="window.location.href='/projects/objects-for-org={{ current_organization.id }}/projects-for-obj={{ object.id }}'"
+                                type="button" class="btn btn-info">
                             -->
                         </button>
                     </td>

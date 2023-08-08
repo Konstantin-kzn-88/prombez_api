@@ -11,8 +11,8 @@
                 <tr>
                     <th scope="col">№</th>
                     <th scope="col">Наименование</th>
-                    <th scope="col">Шифр проекта</th>
-                    <th scope="col">Действие</th>
+                    <th scope="col">Шифр объекта</th>
+                    <th scope="col">Проект</th>
                 </tr>
                 </thead>
 
@@ -25,8 +25,9 @@
                     <td>{{ project.name_project }}</td>
                     <td>{{ project.code_project }}</td>
                     <td>
-                        <button onclick="window.location.href='edit/{{ project.id }}'" type="button" class="btn btn-info">
-                            Редактировать
+                        <button onclick="window.location.href='/projects/objects-for-org={{ current_organization.id }}/projects-for-obj={{ project.object_id }}/edit-project-id={{ project.id }}'"
+                                type="button" class="btn btn-info">
+                            -->
                         </button>
                     </td>
                 </tr>
@@ -35,6 +36,9 @@
 
                 </tbody>
             </table>
+            <a class="btn btn-primary"
+               href="/projects/objects-for-org={{ current_organization.id }}/projects-for-obj={{ object }}/project-add">Добавить
+                новый проект</a>
         </div>
     </div>
 </div>

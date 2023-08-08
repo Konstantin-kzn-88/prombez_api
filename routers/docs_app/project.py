@@ -31,24 +31,20 @@ def get_db():
         db.close()
 
 
-@router.get('/add')
-async def get_add_post_project(request: Request, db: Session = Depends(get_db)):
+@router.get('/objects-for-org={org_id}/projects-for-obj={object_id}/project-add')
+async def get_add_post_project(request: Request, org_id: int, db: Session = Depends(get_db)):
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url='/auth', status_code=status.HTTP_302_FOUND)
-    all_organizations = db.query(models.Organization).filter(models.Organization.user_id == user.get('user_id')).all()
-    current_organization = db.query(models.User, models.Organization).filter(
-        models.User.id == user.get('user_id')).filter(models.Organization.user_id == user.get('user_id')).first()
-    all_objects = db.query(models.Object).filter(models.Object.org_id == current_organization[0].id).all()
+    all_objects = db.query(models.Object).filter(models.Object.org_id == org_id).all()
     return templates.TemplateResponse('docs_app/projects/projects_add.html',
-                                      {'request': request, 'all_organizations': all_organizations,
-                                       'all_objects': all_objects, 'user': user})
+                                      {'request': request, 'all_objects': all_objects, 'user': user})
 
 
-@router.post('/add', response_class=HTMLResponse)
-async def post_add_project(request: Request,
+@router.post('/objects-for-org={org_id}/projects-for-obj={obj_id}/project-add', response_class=HTMLResponse)
+async def post_add_project(request: Request, org_id: int, obj_id: int,
                            name_project: str = Form(...), code_project: str = Form(...),
-                           description_project: str = Form(...), org_id: str = Form(...),
+                           description_project: str = Form(...),
                            object_id: str = Form(...),
                            db: Session = Depends(get_db)):
     user = await get_current_user(request)
@@ -58,13 +54,12 @@ async def post_add_project(request: Request,
     project_model.name_project = name_project
     project_model.code_project = code_project
     project_model.description_project = description_project
-    project_model.org_id = org_id
     project_model.object_id = object_id
 
     db.add(project_model)
     db.commit()
 
-    return RedirectResponse(url='/projects', status_code=status.HTTP_302_FOUND)
+    return RedirectResponse(url=f'/projects/objects-for-org={org_id}/projects-for-obj={obj_id}', status_code=status.HTTP_302_FOUND)
 
 
 @router.get('/')
@@ -78,38 +73,53 @@ async def get_select_organization(request: Request, db: Session = Depends(get_db
                                       {'request': request, 'all_organizations': all_organizations, 'user': user})
 
 
-@router.get('/{org_id}', response_class=HTMLResponse)
-async def get_all_projects_for_organization(request: Request, org_id: int, db: Session = Depends(get_db)):
+@router.get('/objects-for-org={org_id}', response_class=HTMLResponse)
+async def get_all_objects_for_organization(request: Request, org_id: int, db: Session = Depends(get_db)):
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url='/auth', status_code=status.HTTP_302_FOUND)
-    projects = db.query(models.Project).filter(models.Project.org_id == org_id).all()
+    objects = db.query(models.Object).filter(models.Object.org_id == org_id).all()
     current_organization = db.query(models.Organization).filter(models.Organization.id == org_id).first()
-    return templates.TemplateResponse('docs_app/projects/projects_for_organization.html',
-                                      {'request': request, 'projects': projects,
+    return templates.TemplateResponse('docs_app/projects/objects_for_organization.html',
+                                      {'request': request, 'objects': objects,
                                        'current_organization': current_organization, 'user': user})
 
 
-@router.get('/edit/{project_id}', response_class=HTMLResponse)
-async def project_edit(request: Request, project_id: int, db: Session = Depends(get_db)):
+@router.get('/objects-for-org={org_id}/projects-for-obj={object_id}', response_class=HTMLResponse)
+async def get_all_projects_for_object(request: Request, object_id: int, org_id: int, db: Session = Depends(get_db)):
+    user = await get_current_user(request)
+    if user is None:
+        return RedirectResponse(url='/auth', status_code=status.HTTP_302_FOUND)
+    projects = db.query(models.Project).filter(models.Project.object_id == object_id).all()
+    current_organization = db.query(models.Organization).filter(
+        models.Organization.user_id == user.get('user_id')).first()
+    return templates.TemplateResponse('docs_app/projects/projects_for_object.html',
+                                      {'request': request, 'projects': projects, 'object':object_id,
+                                       'current_organization': current_organization, 'user': user})
+
+
+@router.get('/objects-for-org={org_id}/projects-for-obj={object_id}/edit-project-id={project_id}',
+            response_class=HTMLResponse)
+async def project_edit(request: Request, object_id: int, org_id: int, project_id: int, db: Session = Depends(get_db)):
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url='/auth', status_code=status.HTTP_302_FOUND)
     project = db.query(models.Project).filter(models.Project.id == project_id).first()
-    all_organizations = db.query(models.Organization).filter(models.Organization.user_id == user.get('user_id')).all()
-    current_organization = db.query(models.User, models.Organization).filter(
-        models.User.id == user.get('user_id')).filter(models.Organization.user_id == user.get('user_id')).first()
-    all_objects = db.query(models.Object).filter(models.Object.org_id == current_organization[0].id).all()
+    objects = db.query(models.Object).filter(models.Object.org_id == org_id).all()
+    print(objects)
+    current_organization = db.query(models.Organization).filter(
+        models.Organization.user_id == user.get('user_id')).first()
     return templates.TemplateResponse('docs_app/projects/projects_edit.html',
-                                      {'request': request, 'project': project, 'all_organizations': all_organizations,
-                                       'all_objects': all_objects, 'user': user})
+                                      {'request': request, 'objects': objects, 'project': project,
+                                       'current_organization': current_organization, 'user': user})
 
 
-@router.post('/edit/{project_id}', response_class=HTMLResponse)
-async def post_project(request: Request, project_id: int,
+@router.post('/objects-for-org={org_id}/projects-for-obj={obj_id}/edit-project-id={project_id}',
+             response_class=HTMLResponse)
+async def post_project(request: Request, project_id: int, org_id: int, obj_id: int,
                        name_project: str = Form(...), code_project: str = Form(...),
                        description_project: str = Form(...),
-                       org_id: str = Form(...), object_id: str = Form(...),
+                       object_id: str = Form(...),
                        db: Session = Depends(get_db)):
     user = await get_current_user(request)
     if user is None:
@@ -120,15 +130,12 @@ async def post_project(request: Request, project_id: int,
     project.name_project = name_project
     project.code_project = code_project
     project.description_project = description_project
-    project.org_id = org_id
     project.object_id = object_id
 
     db.add(project)
     db.commit()
 
-    id = project.org_id
-
-    return RedirectResponse(url=f'/projects/{id}', status_code=status.HTTP_302_FOUND)
+    return RedirectResponse(url=f'/projects/objects-for-org={org_id}/projects-for-obj={obj_id}', status_code=status.HTTP_302_FOUND)
 
 
 @router.get('/delete/{project_id}')
@@ -137,11 +144,10 @@ async def project_delete(request: Request, project_id: int, db: Session = Depend
     if user is None:
         return RedirectResponse(url='/auth', status_code=status.HTTP_302_FOUND)
     project = db.query(models.Project).filter(models.Project.id == project_id).first()
-    org_id = project.org_id
     if project is None:
         return RedirectResponse(url='/', status_code=status.HTTP_302_FOUND)
 
     db.query(models.Project).filter(models.Project.id == project_id).delete()
     db.commit()
 
-    return RedirectResponse(url=f'/projects/{org_id}', status_code=status.HTTP_302_FOUND)
+    return RedirectResponse(url=f'/projects', status_code=status.HTTP_302_FOUND)

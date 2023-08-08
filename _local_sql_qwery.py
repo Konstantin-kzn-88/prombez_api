@@ -11,6 +11,6 @@ if __name__ == '__main__':
 
     # создаем сессию подключения к бд
     with Session(autoflush=False, bind=engine) as db:
-        records = db.query(models.User, models.Organization).filter(models.User.id == 3).filter(models.Organization.user_id == 3).all()
+        records = db.query(models.Organization, models.Object).filter(models.Organization.user_id == 3).filter(models.Object.org_id == 3).all()
         for user, org in records:
             print(user.email, org.name_organization)

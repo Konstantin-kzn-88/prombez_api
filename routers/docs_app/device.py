@@ -48,7 +48,7 @@ async def get_all_projects_for_organization(request: Request, org_id: int, db: S
         return RedirectResponse(url='/auth', status_code=status.HTTP_302_FOUND)
     projects = db.query(models.Project).filter(models.Project.org_id == org_id).all()
     current_organization = db.query(models.Organization).filter(models.Organization.id == org_id).first()
-    return templates.TemplateResponse('docs_app/devs/projects_for_organization.html',
+    return templates.TemplateResponse('docs_app/devs/objects_for_organization.html',
                                       {'request': request, 'projects': projects,
                                        'current_organization': current_organization, 'user': user})
 

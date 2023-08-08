@@ -91,28 +91,24 @@ with Session(bind=engine) as session:
     prj1 = Project(name_project='Project1',
                    code_project='98-2021',
                    description_project='About project',
-                   org_id=1,
                    object_id=1)
     session.add(prj1)
 
     prj2 = Project(name_project='Project2',
                    code_project='25-25',
                    description_project='About project',
-                   org_id=2,
                    object_id=1)
     session.add(prj2)
 
     prj3 = Project(name_project='Project3',
                    code_project='33-2021',
                    description_project='About project',
-                   org_id=1,
                    object_id=2)
     session.add(prj3)
 
     prj4 = Project(name_project='Project4',
                    code_project='25-58',
                    description_project='About project',
-                   org_id=2,
                    object_id=2)
     session.add(prj4)
 
@@ -237,10 +233,10 @@ with Session(bind=engine) as session:
 #     session.commit()
 #
 #
-# with Session(bind=engine) as session:
-#     usr = session.query(Object).filter(Object.id == 1).one()
-#     session.delete(usr)
-#     session.commit()
+with Session(bind=engine) as session:
+    usr = session.query(User).filter(User.id == 1).one()
+    session.delete(usr)
+    session.commit()
 
 # _____________________________________________
 # Удаление многие ко многим
