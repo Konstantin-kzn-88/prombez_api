@@ -106,7 +106,6 @@ async def project_edit(request: Request, object_id: int, org_id: int, project_id
         return RedirectResponse(url='/auth', status_code=status.HTTP_302_FOUND)
     project = db.query(models.Project).filter(models.Project.id == project_id).first()
     objects = db.query(models.Object).filter(models.Object.org_id == org_id).all()
-    print(objects)
     current_organization = db.query(models.Organization).filter(
         models.Organization.user_id == user.get('user_id')).first()
     return templates.TemplateResponse('docs_app/projects/projects_edit.html',

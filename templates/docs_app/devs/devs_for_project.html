@@ -3,7 +3,7 @@
 <div class="container">
     <div class="card text-center">
         <div class="card-header">
-            Оборудование пользователя
+            <p class="font-weight-bold"> Оборудование {{ current_organization.name_organization }}</p>
         </div>
         <div class="card-body">
             <table class="table table-hover">
@@ -11,26 +11,29 @@
                 <tr>
                     <th scope="col">№</th>
                     <th scope="col">Наименование</th>
-                    <th scope="col">Адрес</th>
-                    <th scope="col">Объекты</th>
+                    <th scope="col">Объем</th>
+                    <th scope="col">Действие</th>
                 </tr>
                 </thead>
 
                 <tbody>
 
-                {% for org in all_organizations %}
-
+                {% for dev in devs %}
                 <tr class="pointer">
                     <td>{{ loop.index }}</td>
-                    <td>{{ org.name_organization }}</td>
-                    <td>{{ org.legal_address }}</td>
+                    <td>{{ dev.dev_name }}</td>
+                    <td>{{ dev.dev_volume }}</td>
                     <td>
-                        <button onclick="window.location.href='/devs/objects-for-org={{ org.id }}'" type="button" class="btn btn-info">
+                        <button onclick="window.location.href='/devs/' +
+                         'objects-for-org={{ current_organization.id }}/' +
+                         'projects-for-obj={{ object_id }}/' +
+                          'devs-for-project={{ project_id }}/' +
+                           'edit-dev_id={{ dev.id }}'"
+                                type="button" class="btn btn-info">
                             -->
                         </button>
                     </td>
                 </tr>
-
                 {% endfor %}
 
                 </tbody>
