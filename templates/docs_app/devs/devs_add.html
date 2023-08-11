@@ -3,7 +3,7 @@
 <div class="container">
     <div class="card">
         <div class="card-header">
-            Редактирование данных оборудования
+            Добавление данных оборудования
         </div>
         <div class="card-body">
             <form method="post">
@@ -11,14 +11,14 @@
                     <div class="form-group col-md-6">
                         <label>Наименование оборудования</label>
                         <input type="text" class="form-control" name="dev_name"
-                               value="{{ dev.dev_name }}" placeholder="Наименование оборудования"
+                               placeholder="Наименование оборудования"
                                required>
                     </div>
                     <div class="form-group col-md-6">
                         <label>Объем оборудования, м3</label>
                         <input type="number" min="0" step="1" class="form-control" name="dev_volume"
                                placeholder="Объем оборудования, м3"
-                               value="{{ dev.dev_volume }}" required>
+                               required>
                     </div>
                 </div>
 
@@ -26,14 +26,14 @@
                     <div class="form-group col-md-6">
                         <label>Доля заполнения оборудования,-</label>
                         <input type="number" min="0" step="0.1" class="form-control" name="dev_complection"
-                               value="{{ dev.dev_complection }}" placeholder="Доля заполнения оборудования,-"
+                               placeholder="Доля заполнения оборудования,-"
                                required>
                     </div>
                     <div class="form-group col-md-6">
                         <label>Расход подводящего трубопровода, м3/ч</label>
                         <input type="number" min="0" step="0.01" class="form-control" name="dev_flow"
                                placeholder="Расход  подводящего трубопровода, м3/ч"
-                               value="{{ dev.dev_flow }}" required>
+                               required>
                     </div>
                 </div>
 
@@ -41,14 +41,14 @@
                     <div class="form-group col-md-6">
                         <label>Время остановки прокачки, с</label>
                         <input type="number" min="0" step="1" class="form-control" name="dev_shutdown"
-                               value="{{ dev.dev_shutdown }}" placeholder="Время остановки прокачки, с"
+                               placeholder="Время остановки прокачки, с"
                                required>
                     </div>
                     <div class="form-group col-md-6">
                         <label>Давление оборудования, МПа</label>
                         <input type="number" min="0" step="0.1" class="form-control" name="dev_pressure"
                                placeholder="Давление оборудования, МПа"
-                               value="{{ dev.dev_pressure }}" required>
+                               required>
                     </div>
                 </div>
 
@@ -56,14 +56,14 @@
                     <div class="form-group col-md-6">
                         <label>Температура оборудования, град С</label>
                         <input type="number" min="-100" step="1" class="form-control" name="dev_temp"
-                               value="{{ dev.dev_temp }}" placeholder="Температура оборудования, град С"
+                               placeholder="Температура оборудования, град С"
                                required>
                     </div>
                     <div class="form-group col-md-6">
                         <label>Поддон оборудования, м2</label>
                         <input type="number" min="0" step="1" class="form-control" name="dev_spill"
                                placeholder="Поддон оборудования, м2"
-                               value="{{ dev.dev_spill }}" required>
+                               required>
                     </div>
                 </div>
 
@@ -71,14 +71,14 @@
                     <div class="form-group col-md-6">
                         <label>Количество погибших, чел</label>
                         <input type="number" min="0" step="1" class="form-control" name="dev_death_man"
-                               value="{{ dev.dev_death_man }}" placeholder="Количество погибших, чел"
+                               placeholder="Количество погибших, чел"
                                required>
                     </div>
                     <div class="form-group col-md-6">
                         <label>Количество пострадавших, чел</label>
                         <input type="number" min="0" step="1" class="form-control" name="dev_injured_man"
                                placeholder="Количество пострадавших, чел"
-                               value="{{ dev.dev_injured_man }}" required>
+                               required>
                     </div>
                 </div>
 
@@ -89,9 +89,7 @@
                         <select class="custom-select" name="dev_view_space" required>
                             <option value="">Выберите класс пространства</option>
                             {% for index in range(1,5) %}
-                            <option {% if dev.dev_view_space | int== index %} selected="selected" {% endif %}
-                                    value={{index}}>{{
-                                index }}
+                            <option value={{index}}>{{ index }}
                             </option>
                             {% endfor %}
                         </select>
@@ -110,17 +108,6 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary">Сохранить</button>
-                <button onclick="delete_device('{{ dev.id }}'); return false;"
-                        type="button" class="btn btn-danger">Удалить
-                </button>
-                <script>
-                    function delete_device(dev_id) {
-                        if (window.confirm('Оборудование будет удалено?')) {
-                            window.location.href = '/devs/delete/' + dev_id;
-                        }
-                    }
-                </script>
-
             </form>
         </div>
     </div>
