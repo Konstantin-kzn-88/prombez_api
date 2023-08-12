@@ -1,0 +1,40 @@
+{% include 'includes/layout.html' %}
+
+<div class="container">
+    <div class="card text-center">
+        <div class="card-header">
+            Трубопроводы пользователя
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">№</th>
+                    <th scope="col">Наименование</th>
+                    <th scope="col">Адрес</th>
+                    <th scope="col">Объекты</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                {% for org in all_organizations %}
+
+                <tr class="pointer">
+                    <td>{{ loop.index }}</td>
+                    <td>{{ org.name_organization }}</td>
+                    <td>{{ org.legal_address }}</td>
+                    <td>
+                        <button onclick="window.location.href='/pipelines/objects-for-org={{ org.id }}'" type="button" class="btn btn-info">
+                            -->
+                        </button>
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,122 @@
+{% include 'includes/layout.html' %}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            Редактирование данных трубопровода
+        </div>
+        <div class="card-body">
+            <form method="post">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Наименование трубопровода</label>
+                        <input type="text" class="form-control" name="pipe_name"
+                               value="{{ pipe.pipe_name }}" placeholder="Наименование трубопровода"
+                               required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Длина трубопровода, км</label>
+                        <input type="number" min="0" step="0.001" class="form-control" name="pipe_lenght"
+                               placeholder="Длина трубопровода, км"
+                               value="{{ pipe.pipe_lenght }}" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Диаметр трубопровода, мм</label>
+                        <input type="number" min="0" step="1" class="form-control" name="pipe_diameter"
+                               value="{{ pipe.pipe_diameter }}" placeholder="Диаметр трубопровода, мм"
+                               required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Давление трубопровода, МПа</label>
+                        <input type="number" min="0" step="0.1" class="form-control" name="pipe_pressure"
+                               placeholder="Давление трубопровода, МПа"
+                               value="{{ pipe.pipe_pressure }}" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Температура трубопровода, град С</label>
+                        <input type="number" min="0" step="1" class="form-control" name="pipe_temp"
+                               value="{{ pipe.pipe_temp }}" placeholder="Температура трубопровода, град С"
+                               required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Расход трубопровода, м3/ч</label>
+                        <input type="number" min="0" step="0.1" class="form-control" name="pipe_flow"
+                               placeholder="Расход трубопровода, м3/ч"
+                               value="{{ pipe.pipe_flow }}" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Время остановки прокачки, с</label>
+                        <input type="number" min="0" step="1" class="form-control" name="pipe_shutdown"
+                               value="{{ pipe.pipe_shutdown }}" placeholder="Время остановки прокачки, с"
+                               required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Количество погибших, чел</label>
+                        <input type="number" min="0" step="1" class="form-control" name="pipe_death_man"
+                               value="{{ pipe.pipe_death_man }}" placeholder="Количество погибших, чел"
+                               required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Количество пострадавших, чел</label>
+                        <input type="number" min="0" step="1" class="form-control" name="pipe_injured_man"
+                               placeholder="Количество пострадавших, чел"
+                               value="{{ pipe.pipe_injured_man }}" required>
+                    </div>
+                </div>
+
+
+                <div class="form-row">
+                    <div class="form-group col-md-6 was-validated">
+                        <label>Класс окружающего пространства</label>
+                        <select class="custom-select" name="pipe_view_space" required>
+                            <option value="">Выберите класс пространства</option>
+                            {% for index in range(1,5) %}
+                            <option {% if pipe.pipe_view_space | int== index %} selected="selected" {% endif %}
+                                    value={{index}}>{{
+                                index }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6 was-validated">
+                        <label>Выберете проект</label>
+                        <select class="custom-select" name="project_id" required>
+                            <option value="">Выберите проект</option>
+                            {% for prj in projects %}
+                            <option {% if prj.id== project_id %} selected="selected" {% endif %}
+                                    value={{prj.id}}>{{ prj.name_project }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <div class="invalid-feedback">Должен быть выбран проект</div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Сохранить</button>
+                <button onclick="delete_pipe('{{ pipe.id }}'); return false;"
+                        type="button" class="btn btn-danger">Удалить
+                </button>
+                <script>
+                    function delete_pipe(pipe_id) {
+                        if (window.confirm('Трубопровод будет удален?')) {
+                            window.location.href = '/pipelines/delete/' + pipe_id;
+                        }
+                    }
+                </script>
+
+            </form>
+        </div>
+    </div>
+</div>

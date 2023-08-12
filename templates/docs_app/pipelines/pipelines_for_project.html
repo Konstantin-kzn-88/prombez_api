@@ -1,0 +1,46 @@
+{% include 'includes/layout.html' %}
+
+<div class="container">
+    <div class="card text-center">
+        <div class="card-header">
+            <p class="font-weight-bold"> Трубопроводы {{ current_organization.name_organization }}</p>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">№</th>
+                    <th scope="col">Наименование</th>
+                    <th scope="col">Длина</th>
+                    <th scope="col">Действие</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                {% for pipe in pipes %}
+                <tr class="pointer">
+                    <td>{{ loop.index }}</td>
+                    <td>{{ pipe.pipe_name }}</td>
+                    <td>{{ pipe.pipe_lenght }}</td>
+                    <td>
+                        <button onclick="window.location.href='/pipelines/' +
+                         'objects-for-org={{ current_organization.id }}/' +
+                         'projects-for-obj={{ object_id }}/' +
+                          'pipes-for-project={{ project_id }}/' +
+                           'edit-pipe_id={{ pipe.id }}'"
+                                type="button" class="btn btn-info">
+                            -->
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+            <a class="btn btn-primary"
+               href="/pipelines/objects-for-org={{ current_organization.id }}/projects-for-obj={{ object_id }}/pipes-for-project={{ project_id }}/pipe-add">Добавить
+                новый трубопровод</a>
+        </div>
+    </div>
+</div>
