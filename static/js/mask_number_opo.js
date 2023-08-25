@@ -1,0 +1,1 @@
+$("#reg_number_object").mask("A99-99999-9999",{autoclear: false});
