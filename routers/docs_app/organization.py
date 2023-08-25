@@ -42,7 +42,7 @@ async def get_all_organizsations(request: Request, db: Session = Depends(get_db)
 
 
 @router.get('/edit/{org_id}', response_class=HTMLResponse)
-async def organization_edit(request: Request, org_id: int, db: Session = Depends(get_db)):
+async def get_organization_edit(request: Request, org_id: int, db: Session = Depends(get_db)):
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url='/auth', status_code=status.HTTP_302_FOUND)
@@ -52,7 +52,7 @@ async def organization_edit(request: Request, org_id: int, db: Session = Depends
 
 
 @router.post('/edit/{org_id}', response_class=HTMLResponse)
-async def post_organization(request: Request, org_id: int,
+async def post_organization_edit(request: Request, org_id: int,
                        name_organization: str = Form(...), legal_address: str = Form(...),
                        name_position_director: str = Form(...), name_director: str = Form(...),
                        name_position_tech_director: str = Form(...), name_tech_director: str = Form(...),
@@ -95,7 +95,7 @@ async def organization_delete(request: Request, org_id: int, db: Session = Depen
 
 
 @router.get('/add', response_class=HTMLResponse)
-async def organization_add(request: Request):
+async def get_organization_add(request: Request):
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url='/auth', status_code=status.HTTP_302_FOUND)
@@ -103,7 +103,7 @@ async def organization_add(request: Request):
 
 
 @router.post('/add', response_class=HTMLResponse)
-async def post_account(request: Request,
+async def post_organization_add(request: Request,
                        name_organization: str = Form(...), legal_address: str = Form(...),
                        name_position_director: str = Form(...), name_director: str = Form(...),
                        name_position_tech_director: str = Form(...), name_tech_director: str = Form(...),
