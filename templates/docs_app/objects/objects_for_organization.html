@@ -3,7 +3,7 @@
 <div class="container">
     <div class="card text-center">
         <div class="card-header">
-            <p class="font-weight-bold"> Опасные объекты {{ current_organization.name_organization }}</p>
+            <h6 class="text-left">2. <a href="/objects">Объекты</a> -> опасные производственные объекты {{ current_organization.name_organization }}</h6>
         </div>
         <div class="card-body">
             <table class="table table-hover">
@@ -13,7 +13,7 @@
                     <th scope="col">Наименование</th>
                     <th scope="col">Рег. номер</th>
                     <th scope="col">Класс</th>
-                    <th scope="col">Действие</th>
+                    <th scope="col">Адрес</th>
                 </tr>
                 </thead>
 
@@ -23,13 +23,10 @@
 
                 <tr class="pointer">
                     <td>{{ loop.index }}</td>
-                    <td>{{ object.name_object }}</td>
+                    <td><a href="org_id={{ org_id }}/edit/obj_id={{ object.id }}">{{ object.name_object }}</a></td>
                     <td>{{ object.reg_number_object }}</td>
                     <td>{{ object.class_object }}</td>
-                    <td>
-                        <button onclick="window.location.href='edit/{{ object.id }}'" type="button" class="btn btn-info">
-                            Редактировать
-                        </button>
+                    <td>{{ object.address_object }}</td>
                     </td>
                 </tr>
 

@@ -74,7 +74,7 @@ async def get_select_organization(request: Request, db: Session = Depends(get_db
                                       {'request': request, 'all_organizations': all_organizations, 'user': user})
 
 
-@router.get('/{org_id}', response_class=HTMLResponse)
+@router.get('/org_id={org_id}', response_class=HTMLResponse)
 async def get_all_objects_for_organization(request: Request, org_id: int, db: Session = Depends(get_db)):
     user = await get_current_user(request)
     if user is None:
@@ -83,11 +83,11 @@ async def get_all_objects_for_organization(request: Request, org_id: int, db: Se
     current_organization = db.query(models.Organization).filter(models.Organization.id == org_id).first()
     return templates.TemplateResponse('docs_app/objects/objects_for_organization.html',
                                       {'request': request, 'objects': objects,
-                                       'current_organization': current_organization, 'user': user})
+                                       'current_organization': current_organization, 'org_id':org_id, 'user': user})
 
 
-@router.get('/edit/{object_id}', response_class=HTMLResponse)
-async def object_edit(request: Request, object_id: int, db: Session = Depends(get_db)):
+@router.get('/org_id={org_id}/edit/obj_id={object_id}', response_class=HTMLResponse)
+async def get_object_edit(request: Request, object_id: int, org_id: int, db: Session = Depends(get_db)):
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url='/auth', status_code=status.HTTP_302_FOUND)
@@ -95,14 +95,14 @@ async def object_edit(request: Request, object_id: int, db: Session = Depends(ge
     all_organizations = db.query(models.Organization).filter(models.Organization.user_id == user.get('user_id')).all()
     return templates.TemplateResponse('docs_app/objects/objects_edit.html',
                                       {'request': request, 'object': object, 'all_organizations': all_organizations,
-                                       'user': user})
+                                       'org_id':org_id, 'user': user})
 
 
-@router.post('/edit/{object_id}', response_class=HTMLResponse)
-async def post_object(request: Request, object_id: int,
+@router.post('/org_id={org_id}/edit/obj_id={object_id}', response_class=HTMLResponse)
+async def post_object_edit(request: Request, object_id: int, org_id: int,
                       name_object: str = Form(...), address_object: str = Form(...),
                       reg_number_object: str = Form(...),
-                      class_object: str = Form(...), org_id: str = Form(...),
+                      class_object: str = Form(...), org_form_id: str = Form(...),
                       db: Session = Depends(get_db)):
     user = await get_current_user(request)
     if user is None:
@@ -114,14 +114,14 @@ async def post_object(request: Request, object_id: int,
     object.address_object = address_object
     object.reg_number_object = reg_number_object
     object.class_object = class_object
-    object.org_id = org_id
+    object.org_id = org_form_id
 
     db.add(object)
     db.commit()
 
-    id = object.org_id
+    object_id = object.org_id
 
-    return RedirectResponse(url=f'/objects/{id}', status_code=status.HTTP_302_FOUND)
+    return RedirectResponse(url=f'/objects/org_id={org_id}/', status_code=status.HTTP_302_FOUND)
 
 
 @router.get('/delete/{object_id}')
@@ -129,7 +129,7 @@ async def project_delete(request: Request, object_id: int, db: Session = Depends
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url='/auth', status_code=status.HTTP_302_FOUND)
-    object = db.query(models.Object).filter(models.Project.id == object_id).first()
+    object = db.query(models.Object).filter(models.Object.id == object_id).first()
     org_id = object.org_id
     if object is None:
         return RedirectResponse(url='/', status_code=status.HTTP_302_FOUND)
@@ -137,4 +137,4 @@ async def project_delete(request: Request, object_id: int, db: Session = Depends
     db.query(models.Object).filter(models.Object.id == object_id).delete()
     db.commit()
 
-    return RedirectResponse(url=f'/objects/{org_id}', status_code=status.HTTP_302_FOUND)
+    return RedirectResponse(url=f'/objects/org_id={org_id}', status_code=status.HTTP_302_FOUND)

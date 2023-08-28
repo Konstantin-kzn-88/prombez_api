@@ -3,7 +3,7 @@
 <div class="container">
     <div class="card">
         <div class="card-header">
-            Редактирование данных объекта
+            <h6 class="text-left">2. <a href="/objects">Объекты</a> -> редактирование данных объекта</h6>
         </div>
         <div class="card-body">
             <form method="post">
@@ -24,7 +24,7 @@
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label>Рег. номер</label>
-                        <input type="text" class="form-control" name="reg_number_object"
+                        <input type="text" class="form-control" name="reg_number_object" id="reg_number_object"
                                value="{{ object.reg_number_object }}" placeholder="Рег. номер"
                                required>
                     </div>
@@ -43,7 +43,7 @@
 
                 <div class="form-row">
                     <div class="form-group col-md-6 was-validated">
-                        <select class="custom-select" name="org_id" required>
+                        <select class="custom-select" name="org_form_id" required>
                             <option value="">Выберите организацию</option>
                             {% for org in all_organizations %}
                             <option {% if org.id== object.org_id %} selected="selected" {% endif %} value={{org.id}}>{{
@@ -71,3 +71,5 @@
         </div>
     </div>
 </div>
+
+<script src="{{ url_for('static', path='/js/mask_number_opo.js') }}"></script>
