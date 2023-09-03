@@ -3,7 +3,9 @@
 <div class="container">
     <div class="card">
         <div class="card-header">
-            Добавление нового проекта
+            <h6 class="text-left">3. <a href="/projects">Проекты</a> -> <a
+                    href="/projects/org_id={{ current_organization.id }}">опасные производственные объекты {{
+                current_organization.name_organization }}</a> -> добавление нового проекта</h6>
         </div>
         <div class="card-body">
             <form method="post">
@@ -28,7 +30,7 @@
                 <div class="form-row">
                     <div class="form-group col-md-6 was-validated">
                         <select class="custom-select" name="object_id" required>
-                            <option value="">Выберите проект</option>
+                            <option value="">Выберите объект</option>
                             {% for obj in all_objects %}
                             <option value={{obj.id}}>{{ obj.name_object }}</option>
                             {% endfor %}

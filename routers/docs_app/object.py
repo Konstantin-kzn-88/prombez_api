@@ -119,13 +119,11 @@ async def post_object_edit(request: Request, object_id: int, org_id: int,
     db.add(object)
     db.commit()
 
-    object_id = object.org_id
-
     return RedirectResponse(url=f'/objects/org_id={org_id}/', status_code=status.HTTP_302_FOUND)
 
 
 @router.get('/delete/{object_id}')
-async def project_delete(request: Request, object_id: int, db: Session = Depends(get_db)):
+async def object_delete(request: Request, object_id: int, db: Session = Depends(get_db)):
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url='/auth', status_code=status.HTTP_302_FOUND)

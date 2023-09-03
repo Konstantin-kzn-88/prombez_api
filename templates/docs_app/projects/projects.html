@@ -3,7 +3,7 @@
 <div class="container">
     <div class="card text-center">
         <div class="card-header">
-            Проекты пользователя
+            <h6 class="text-left">3. Проекты</h6>
         </div>
         <div class="card-body">
             <table class="table table-hover">
@@ -12,7 +12,7 @@
                     <th scope="col">№</th>
                     <th scope="col">Наименование</th>
                     <th scope="col">Адрес</th>
-                    <th scope="col">Объекты</th>
+                    <th scope="col">Телефон</th>
                 </tr>
                 </thead>
 
@@ -22,15 +22,10 @@
 
                 <tr class="pointer">
                     <td>{{ loop.index }}</td>
-                    <td>{{ org.name_organization }}</td>
+                    <td><a href="org_id={{ org.id }}">{{ org.name_organization }}</a></td>
                     <td>{{ org.legal_address }}</td>
-                    <td>
-                        <button onclick="window.location.href='/projects/objects-for-org={{ org.id }}'" type="button" class="btn btn-info">
-                            -->
-                        </button>
-                    </td>
+                    <td>{{ org.telephone }}</td>
                 </tr>
-
                 {% endfor %}
 
                 </tbody>
