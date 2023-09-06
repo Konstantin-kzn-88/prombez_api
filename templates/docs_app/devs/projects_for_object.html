@@ -3,7 +3,9 @@
 <div class="container">
     <div class="card text-center">
         <div class="card-header">
-            <p class="font-weight-bold"> Проекты {{ current_organization.name_organization }}</p>
+            <h6 class="text-left">5. <a href="/devs">Оборудование</a> -> <a
+                    href="/devs/org_id={{ current_organization.id }}">опасные производственные объекты {{
+                current_organization.name_organization }}</a> -> проекты</h6>
         </div>
         <div class="card-body">
             <table class="table table-hover">
@@ -21,14 +23,11 @@
                 {% for project in projects %}
                 <tr class="pointer">
                     <td>{{ loop.index }}</td>
+                    <td>
+                        <a href="org_id={{ current_organization.id }}/obj_id={{ obj_id }}/project_id={{ project.id }}">{{ project.name_project }}</a>
+                    </td>
                     <td>{{ project.name_project }}</td>
                     <td>{{ project.code_project }}</td>
-                    <td>
-                        <button onclick="window.location.href='/devs/objects-for-org={{ current_organization.id }}/projects-for-obj={{ project.object_id }}/devs-for-project={{ project.id }}'"
-                                type="button" class="btn btn-info">
-                            -->
-                        </button>
-                    </td>
                 </tr>
                 {% endfor %}
 

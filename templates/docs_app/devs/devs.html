@@ -3,7 +3,7 @@
 <div class="container">
     <div class="card text-center">
         <div class="card-header">
-            Оборудование пользователя
+            <h6 class="text-left">5. Оборудование</h6>
         </div>
         <div class="card-body">
             <table class="table table-hover">
@@ -20,16 +20,12 @@
 
                 {% for org in all_organizations %}
 
-                <tr class="pointer">
-                    <td>{{ loop.index }}</td>
-                    <td>{{ org.name_organization }}</td>
-                    <td>{{ org.legal_address }}</td>
-                    <td>
-                        <button onclick="window.location.href='/devs/objects-for-org={{ org.id }}'" type="button" class="btn btn-info">
-                            -->
-                        </button>
-                    </td>
-                </tr>
+                    <tr class="pointer">
+                        <td>{{ loop.index }}</td>
+                        <td><a href="org_id={{ org.id }}">{{ org.name_organization }}</a></td>
+                        <td>{{ org.legal_address }}</td>
+                        <td>{{ org.telephone }}</td>
+                    </tr>
 
                 {% endfor %}
 
