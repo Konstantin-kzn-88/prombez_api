@@ -66,9 +66,9 @@ async def get_all_projects_for_object(request: Request, obj_id: int, org_id: int
                                        'current_organization': current_organization, 'user': user})
 
 
-@router.get('/org_id={org_id}/obj_id={obj_id}/project={project_id}',
+@router.get('/org_id={org_id}/obj_id={obj_id}/project_id={project_id}',
             response_class=HTMLResponse)
-async def get_all_devs_for_project(request: Request, object_id: int, org_id: int, project_id: int,
+async def get_all_devs_for_project(request: Request, obj_id: int, org_id: int, project_id: int,
                                    db: Session = Depends(get_db)):
     user = await get_current_user(request)
     if user is None:
@@ -76,21 +76,25 @@ async def get_all_devs_for_project(request: Request, object_id: int, org_id: int
     devs = db.query(models.Device).filter(models.Device.project_id == project_id).all()
     current_organization = db.query(models.Organization).filter(
         models.Organization.user_id == user.get('user_id')).first()
+    current_project = db.query(models.Project).filter(
+        models.Project.id == project_id).first()
+    current_object = db.query(models.Object).filter(
+        models.Object.id == obj_id).first()
     return templates.TemplateResponse('docs_app/devs/devs_for_project.html',
-                                      {'request': request, 'devs': devs, 'object_id': object_id,
-                                       'project_id': project_id,
+                                      {'request': request, 'devs': devs, 'current_object': current_object,
+                                       'current_project': current_project,
                                        'current_organization': current_organization, 'user': user})
 
 
-@router.get('/objects-for-org={org_id}/projects-for-obj={object_id}/devs-for-project={project_id}/edit-dev_id={dev_id}',
+@router.get('/org_id={org_id}/obj_id={obj_id}/project_id={project_id}/edit/dev_id={dev_id}',
             response_class=HTMLResponse)
-async def dev_edit(request: Request, object_id: int, org_id: int, project_id: int, dev_id: int,
+async def get_dev_edit(request: Request, obj_id: int, org_id: int, project_id: int, dev_id: int,
                    db: Session = Depends(get_db)):
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url='/auth', status_code=status.HTTP_302_FOUND)
     dev = db.query(models.Device).filter(models.Device.id == dev_id).first()
-    projects = db.query(models.Project).filter(models.Project.object_id == object_id).all()
+    projects = db.query(models.Project).filter(models.Project.object_id == obj_id).all()
     subs = db.query(models.Substance).all()
     current_organization = db.query(models.Organization).filter(
         models.Organization.user_id == user.get('user_id')).first()
@@ -101,15 +105,15 @@ async def dev_edit(request: Request, object_id: int, org_id: int, project_id: in
 
 
 @router.post(
-    '/objects-for-org={org_id}/projects-for-obj={object_id}/devs-for-project={prj_id}/edit-dev_id={dev_id}',
+    'org_id={org_id}/obj_id={obj_id}/project_id={project_id}/edit/dev_id={dev_id}',
     response_class=HTMLResponse)
-async def post_dev(request: Request, object_id: int, org_id: int, prj_id: int, dev_id: int,
+async def post_dev_edit(request: Request, obj_id: int, org_id: int, project_id: int, dev_id: int,
                    dev_name: str = Form(...), dev_volume: str = Form(...),
                    dev_complection: str = Form(...), dev_flow: str = Form(...),
                    dev_shutdown: str = Form(...), dev_pressure: str = Form(...),
                    dev_temp: str = Form(...), dev_spill: str = Form(...),
                    dev_death_man: str = Form(...), dev_injured_man: str = Form(...),
-                   dev_view_space: str = Form(...), project_id: str = Form(...),
+                   dev_view_space: str = Form(...), prj_id: str = Form(...),
                    db: Session = Depends(get_db)):
     user = await get_current_user(request)
     if user is None:
@@ -128,13 +132,13 @@ async def post_dev(request: Request, object_id: int, org_id: int, prj_id: int, d
     device.dev_death_man = dev_death_man
     device.dev_injured_man = dev_injured_man
     device.dev_view_space = dev_view_space
-    device.project_id = project_id
+    device.project_id = prj_id
 
     db.add(device)
     db.commit()
 
     return RedirectResponse(
-        url=f'/devs/objects-for-org={org_id}/projects-for-obj={object_id}/devs-for-project={prj_id}',
+        url=f'/org_id={org_id}/obj_id={obj_id}/project_id={project_id}',
         status_code=status.HTTP_302_FOUND)
 
 

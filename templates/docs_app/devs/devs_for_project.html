@@ -3,7 +3,9 @@
 <div class="container">
     <div class="card text-center">
         <div class="card-header">
-            <p class="font-weight-bold"> Оборудование {{ current_organization.name_organization }}</p>
+            <h6 class="text-left">5. <a href="/devs">Оборудование</a> -> <a
+                    href="/devs/org_id={{ current_organization.id }}">опасные производственные объекты {{
+                current_organization.name_organization }}</a> -> <a href="/devs/org_id={{ current_organization.id }}/obj_id={{ current_object.id }}">проект {{ current_project.code_project }}</a></h6>
         </div>
         <div class="card-body">
             <table class="table table-hover">
@@ -21,26 +23,18 @@
                 {% for dev in devs %}
                 <tr class="pointer">
                     <td>{{ loop.index }}</td>
+                    <td>
+                        <a href="/devs/org_id={{ current_organization.id }}/obj_id={{ current_object.id }}/project_id={{ current_project.id }}/edit/dev_id={{ dev.id }}">{{ dev.dev_name }}</a>
+                    </td>
                     <td>{{ dev.dev_name }}</td>
                     <td>{{ dev.dev_volume }}</td>
-                    <td>
-                        <button onclick="window.location.href='/devs/' +
-                         'objects-for-org={{ current_organization.id }}/' +
-                         'projects-for-obj={{ object_id }}/' +
-                          'devs-for-project={{ project_id }}/' +
-                           'edit-dev_id={{ dev.id }}'"
-                                type="button" class="btn btn-info">
-                            -->
-                        </button>
-                    </td>
+
                 </tr>
                 {% endfor %}
 
                 </tbody>
             </table>
-            <a class="btn btn-primary"
-               href="/devs/objects-for-org={{ current_organization.id }}/projects-for-obj={{ object_id }}/devs-for-project={{ project_id }}/dev-add">Добавить
-                новое оборудование</a>
+
         </div>
     </div>
 </div>
