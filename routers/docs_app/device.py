@@ -105,7 +105,7 @@ async def get_dev_edit(request: Request, obj_id: int, org_id: int, project_id: i
 
 
 @router.post(
-    'org_id={org_id}/obj_id={obj_id}/project_id={project_id}/edit/dev_id={dev_id}',
+    '/org_id={org_id}/obj_id={obj_id}/project_id={project_id}/edit/dev_id={dev_id}',
     response_class=HTMLResponse)
 async def post_dev_edit(request: Request, obj_id: int, org_id: int, project_id: int, dev_id: int,
                    dev_name: str = Form(...), dev_volume: str = Form(...),
@@ -138,7 +138,7 @@ async def post_dev_edit(request: Request, obj_id: int, org_id: int, project_id: 
     db.commit()
 
     return RedirectResponse(
-        url=f'/org_id={org_id}/obj_id={obj_id}/project_id={project_id}',
+        url=f'/devs/org_id={org_id}/obj_id={obj_id}/project_id={project_id}',
         status_code=status.HTTP_302_FOUND)
 
 
@@ -158,19 +158,19 @@ async def dev_delete(request: Request, dev_id: int,
     return RedirectResponse(url=f'/devs/', status_code=status.HTTP_302_FOUND)
 
 
-@router.get('/objects-for-org={org_id}/projects-for-obj={object_id}/devs-for-project={project_id}/dev-add')
-async def get_add_post_device(request: Request, object_id: int, org_id: int, project_id: int,
+@router.get('/org_id={org_id}/obj_id={obj_id}/project_id={project_id}/add')
+async def get_add_post_device(request: Request, obj_id: int, org_id: int, project_id: int,
                               db: Session = Depends(get_db)):
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url='/auth', status_code=status.HTTP_302_FOUND)
-    projects = db.query(models.Project).filter(models.Project.object_id == object_id).all()
+    projects = db.query(models.Project).filter(models.Project.object_id == obj_id).all()
     subs = db.query(models.Substance).all()
     current_organization = db.query(models.Organization).filter(
         models.Organization.user_id == user.get('user_id')).first()
 
     return templates.TemplateResponse('docs_app/devs/devs_add.html',
-                                      {'request': request, 'projects': projects, 'subs': subs, 'object_id':object_id,
+                                      {'request': request, 'projects': projects, 'subs': subs, 'object_id':obj_id,
                                        'current_organization': current_organization, 'project_id': project_id,
                                        'user': user})
 

@@ -13,8 +13,8 @@
                 <tr>
                     <th scope="col">№</th>
                     <th scope="col">Наименование</th>
-                    <th scope="col">Объем</th>
-                    <th scope="col">Действие</th>
+                    <th scope="col">Объем, м3</th>
+                    <th scope="col">Площадь, м2</th>
                 </tr>
                 </thead>
 
@@ -26,14 +26,18 @@
                     <td>
                         <a href="/devs/org_id={{ current_organization.id }}/obj_id={{ current_object.id }}/project_id={{ current_project.id }}/edit/dev_id={{ dev.id }}">{{ dev.dev_name }}</a>
                     </td>
-                    <td>{{ dev.dev_name }}</td>
+
                     <td>{{ dev.dev_volume }}</td>
+                    <td>{{ dev.dev_spill }}</td>
 
                 </tr>
                 {% endfor %}
 
                 </tbody>
             </table>
+            <a class="btn btn-primary"
+               href="/devs/org_id={{ current_organization.id }}/obj_id={{ current_object.id }}/project_id={{ current_project.id }}/add">Добавить
+                новое оборудование</a>
 
         </div>
     </div>
