@@ -175,9 +175,9 @@ async def get_add_post_device(request: Request, obj_id: int, org_id: int, projec
                                        'user': user})
 
 
-@router.post('/objects-for-org={org_id}/projects-for-obj={object_id}/devs-for-project={prj_id}/dev-add',
+@router.post('/org_id={org_id}/obj_id={obj_id}/project_id={prj_id}/add',
              response_class=HTMLResponse)
-async def post_add_project(request: Request, object_id: int, org_id: int, prj_id: int,
+async def post_add_post_device(request: Request, obj_id: int, org_id: int, prj_id: int,
                            dev_name: str = Form(...), dev_volume: str = Form(...),
                            dev_complection: str = Form(...), dev_flow: str = Form(...),
                            dev_shutdown: str = Form(...), dev_pressure: str = Form(...),
@@ -207,5 +207,5 @@ async def post_add_project(request: Request, object_id: int, org_id: int, prj_id
     db.add(device_model)
     db.commit()
 
-    return RedirectResponse(url=f'/devs/objects-for-org={org_id}/projects-for-obj={object_id}/devs-for-project={prj_id}',
+    return RedirectResponse(url=f'/devs/org_id={org_id}/obj_id={obj_id}/project_id={prj_id}',
                             status_code=status.HTTP_302_FOUND)
