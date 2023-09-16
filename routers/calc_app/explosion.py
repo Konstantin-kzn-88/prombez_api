@@ -63,7 +63,7 @@ async def post_dev_edit(request: Request,
     y_data = zone_array[1]
 
     plot_div = plot({
-        "data": [Scatter(x=x_data, y=y_data)],
+        "data": [Scatter(x=x_data, y=y_data, line=dict(color='firebrick', width=4))],
         "layout": Layout(title="Взрыв (СП 12.13130-2009)", xaxis=dict(title="X Label"), yaxis=dict(title="У Label"))
     },
         output_type='div', show_link=False, link_text="")
