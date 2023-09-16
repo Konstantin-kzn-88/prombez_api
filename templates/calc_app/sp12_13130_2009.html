@@ -1,0 +1,33 @@
+{% include 'includes/layout.html' %}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h6 class="text-left">СП 12.13130-2009.
+            Приложение "В.3 Расчет избыточного давления и импульса волны давления при
+                сгорании смесей горючих газов и паров с воздухом в открытом пространстве"</h6>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Масса опасного вещества, кг</label>
+                        <input type="number" min="0" step="1" class="form-control" name="mass" required placeholder="Например, 2000 кг">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Теплота сгорания, кДж/кг</label>
+                        <input type="number" min="0" step="1" class="form-control" name="heat_of_combustion" required placeholder="Например, 46000 кДж/кг">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Коэффициент участия во взрыве, -</label>
+                        <input type="number" min="0" max="1" step="0.1" class="form-control" name="z" required placeholder="Например, 0.1 -">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-info">Расчет</button>
+            </form>
+        </div>
+    </div>
+</div>

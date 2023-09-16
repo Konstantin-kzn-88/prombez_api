@@ -12,7 +12,7 @@
                 </li>
                 {% if user %}
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                    <a class="nav-link dropdown-toggle" href="#" id="menu_user_drop_down" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Данные пользователя
                     </a>
@@ -25,6 +25,19 @@
                         <a class="dropdown-item" href="/subs/">4. Вещества</a>
                         <a class="dropdown-item" href="/devs/">5. Оборудование</a>
                         <a class="dropdown-item" href="/pipelines/">6. Трубопроводы</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="menu_calc_drop_down" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Методики расчета
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/about_calc/">О методиках расчета</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/explosion/sp1213130-2009">1. Расчет взрыва (СП 12.13130-2009)</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">2. Расчет пожара пролива (Приказ МЧС №404)</a>
                     </div>
                 </li>
                 {% endif %}
