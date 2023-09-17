@@ -6,8 +6,8 @@
 # email kuznetsovkm@yandex.ru
 # -----------------------------------------------------------
 
-from calc.calc_probit import Probit
-from calc._found_nearest_value import get_nearest_value
+from calculation_methods.calc_probit import Probit
+from calculation_methods._found_nearest_value import get_nearest_value
 
 
 class Explosion:
@@ -127,12 +127,12 @@ class Explosion:
             probit = round(Probit().probit_explosion(delta_p, impulse), 3)
             probability = round(Probit().probability(probit), 3)
             # append
-            radius_arr.append(int(radius))
+            radius_arr.append(radius)
             delta_p_arr.append(delta_p)
             impulse_arr.append(impulse)
             probit_arr.append(probit)
             probability_arr.append(probability)
-            radius += 0.1
+            radius += 0.5
 
         result = (radius_arr, delta_p_arr, impulse_arr, probit_arr, probability_arr)
 

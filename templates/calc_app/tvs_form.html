@@ -1,0 +1,78 @@
+{% include 'includes/layout.html' %}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h6 class="text-left">Руководство по безопасности "Методика оценки последствий аварийных взрывов
+                топливно-воздушных смесей"
+                Утв. приказом Федеральной службы по экологическому, технологическому и атомному надзору от 28 ноября
+                2022 г. N 412</h6>
+        </div>
+
+        <div class="card-body">
+            <form method="post">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Масса опасного вещества, кг</label>
+                        <input type="number" min="0" step="1" class="form-control" name="mass" required
+                               placeholder="Например, 2000 кг">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Теплота сгорания, кДж/кг</label>
+                        <input type="number" min="0" step="1" class="form-control" name="heat_of_combustion" required
+                               placeholder="Например, 46000 кДж/кг">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Класс окружающего пространства, -</label>
+                        <input type="number" min="1" max="4" step="1" class="form-control" name="view_space"
+                               data-toggle="tooltip" data-html="true"
+                               title="
+Вид 1. Наличие длинных труб, полостей, каверн, заполненных горючей смесью, при сгорании которой возможно формирование турбулентных струй продуктов сгорания с размером не менее трех размеров детонационной ячейки для данной смеси.
+Вид 2. Сильно загроможденное пространство: наличие полузамкнутых объемов, высокая плотность размещения технологического оборудования.
+Вид 3. Средне загроможденное пространство: отдельно стоящие технологические установки, резервуарный парк.
+Вид 4. Слабо загроможденное и свободное пространство."
+                               required
+                               placeholder="Например, 1 -">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Класс вещества, -</label>
+                        <input type="number" min="1" max="4" step="1" class="form-control" name="class_substance"
+                               data-toggle="tooltip" data-html="true"
+                               title="
+Класс 1 - Особо чувствительные вещества;
+Класс 2 - Чувствительные вещества;
+Класс 3 - Среднечувствительные вещества;
+Класс 4 - Слабочувствительные вещества."
+                               required
+                               placeholder="Например, 1 -">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Параметр "сигма", -</label>
+                        <select class="custom-select" name="sigma" data-toggle="tooltip" data-html="true"
+                                title="Для газовых смесей  принимается равной 7, для гетерогенных равной 4." required>
+                            <option value=4 selected="selected">4</option>
+                            <option value=7>7</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Энергозапас облака ТВС, -</label>
+                        <select class="custom-select" name="energy_level" data-toggle="tooltip" data-html="true"
+                                title="При расчете параметров взрыва облака ТВС, лежащего на поверхности земли, величина эффективного энергозапаса удваивается."
+                                required>
+                            <option value=1 selected="selected">1</option>
+                            <option value=2>2</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-info">Расчет</button>
+            </form>
+        </div>
+    </div>
+</div>
