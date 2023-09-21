@@ -4,7 +4,8 @@
 <div class="container">
     <div class="card">
         <div class="card-header">
-            <h6 class="text-left">Результат расчета для: масса ТВС {{ calc_data[0] }} кг, тепл.сгорания {{ calc_data[1] }} кДж/кг, коэф.участия {{ calc_data[2] }} -</h6>
+            <h6 class="text-left">Результат расчета для: масса ТВС {{ calc_data[0] }} кг, тепл.сгорания {{ calc_data[1]
+                }} кДж/кг, коэф.участия {{ calc_data[2] }} -</h6>
             <h6 class="text-left">СП 12.13130-2009.
                 Приложение "В.3 Расчет избыточного давления и импульса волны давления при
                 сгорании смесей горючих газов и паров с воздухом в открытом пространстве"</h6>
@@ -18,6 +19,45 @@
         {{ plot_div_impuls }}
         {% endautoescape %}
 
+        <div class="card-header">
+            <p data-toggle="tooltip" data-html="true"
+               title="
+&#916;P=100 кПа - Полное разрушение зданий
+&#916;P=53 кПа - 50%-е разрушение зданий
+&#916;P=28 кПа - Средние повреждения зданий
+&#916;P=12 кПа - Умеренные повреждения зданий (повреждение внутренних перегородок, рам, дверей и т.п.)
+&#916;P=5 кПа - Нижний порог повреждения человека волной давления
+&#916;P=3 кПа - Малые повреждения (разбита часть остекления)">Таблица - 1. Зоны поражения</p>
+        </div>
+
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">&#916;P=100 кПа</th>
+                <th scope="col">&#916;P=53 кПа</th>
+                <th scope="col">&#916;P=28 кПа</th>
+                <th scope="col">&#916;P=12 кПа</th>
+                <th scope="col">&#916;P=5 кПа</th>
+                <th scope="col">&#916;P=3 кПа</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr class="pointer">
+                <td>{{ zone_cls_array[0] }}</td>
+                <td>{{ zone_cls_array[1] }}</td>
+                <td>{{ zone_cls_array[2] }}</td>
+                <td>{{ zone_cls_array[3] }}</td>
+                <td>{{ zone_cls_array[4] }}</td>
+                <td>{{ zone_cls_array[5] }}</td>
+            </tr>
+            </tbody>
+
+        </table>
+
+        <div class="card-header">
+            <p>Таблица - 2. Зависимость поражающего фактора от расстояния</p>
+        </div>
 
         <table class="table table-hover">
             <thead>
