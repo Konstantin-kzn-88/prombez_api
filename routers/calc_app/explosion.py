@@ -32,7 +32,7 @@ async def get_explosion_sp(request: Request):
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url='/auth', status_code=status.HTTP_302_FOUND)
-    return templates.TemplateResponse('calc_app/sp12_13130_2009_form.html', {'request': request, 'user': user})
+    return templates.TemplateResponse('calc_app/explosion_sp_form.html', {'request': request, 'user': user})
 
 
 @router.post('/sp1213130-2009', response_class=HTMLResponse)
@@ -63,7 +63,7 @@ async def post_dev_edit(request: Request,
     },
         output_type='div', show_link=False, link_text="")
 
-    return templates.TemplateResponse('calc_app/sp12_13130_2009_result.html', {'request': request,
+    return templates.TemplateResponse('calc_app/explosion_sp_result.html', {'request': request,
                                                                                'user': user,
                                                                                'zone_array': zipped_list,
                                                                                'plot_div_explosion': plot_div_explosion,
@@ -76,7 +76,7 @@ async def get_explosion_tvs(request: Request):
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url='/auth', status_code=status.HTTP_302_FOUND)
-    return templates.TemplateResponse('calc_app/tvs_form.html', {'request': request, 'user': user})
+    return templates.TemplateResponse('calc_app/explosion_tvs_form.html', {'request': request, 'user': user})
 
 @router.post('/tvs', response_class=HTMLResponse)
 async def post_dev_edit(request: Request,
@@ -108,7 +108,7 @@ async def post_dev_edit(request: Request,
     },
         output_type='div', show_link=False, link_text="")
 
-    return templates.TemplateResponse('calc_app/tvs_result.html', {'request': request,
+    return templates.TemplateResponse('calc_app/explosion_tvs_result.html', {'request': request,
                                                                                'user': user,
                                                                                'zone_array': zipped_list,
                                                                                'plot_div_explosion': plot_div_explosion,

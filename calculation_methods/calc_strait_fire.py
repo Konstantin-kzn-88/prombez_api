@@ -8,8 +8,8 @@
 # -----------------------------------------------------------
 
 import math
-from calc.calc_probit import Probit
-from calc._found_nearest_value import get_nearest_value
+from calculation_methods.calc_probit import Probit
+from calculation_methods._found_nearest_value import get_nearest_value
 
 
 class Strait_fire:

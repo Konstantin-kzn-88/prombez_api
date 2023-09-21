@@ -1,0 +1,50 @@
+{% include 'includes/layout.html' %}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h6 class="text-left">Приложение к Приказу МЧС России от 10.07.2009 N 404. VI. Интенсивность теплового
+                излучения</h6>
+        </div>
+        <div class="card-body">
+            <form method="post">
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Площадь пролива, м2</label>
+                        <input type="number" min="1" step="1" class="form-control" name="s_spill" required
+                               placeholder="Например, 2000 м2">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Удельная масс.скорость выгорания, кг/(с*м2)</label>
+                        <input type="number" min="0.01" step="0.01" class="form-control" name="m_sg" required
+                               placeholder="Например, 0.06 кг/(с*м2)">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Молекулярная масса, кг/кмоль</label>
+                        <input type="number" min="1" step="1" class="form-control" name="mol_mass" required
+                               placeholder="Например, 98 кг/кмоль">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Температура кипения, град.С</label>
+                        <input type="number" min="0.01" step="0.01" class="form-control" name="t_boiling" required
+                               placeholder="Например, 38 град.С">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Скорость ветра, м/с</label>
+                        <input type="number" min="1" step="1" class="form-control" name="wind_velocity" required
+                               placeholder="Например, 1 м/с">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-info">Расчет</button>
+            </form>
+        </div>
+    </div>
+</div>

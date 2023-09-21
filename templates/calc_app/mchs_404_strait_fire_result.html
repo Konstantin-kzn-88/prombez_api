@@ -1,0 +1,43 @@
+{% include 'includes/layout.html' %}
+
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h6 class="text-left">Результат расчета для: площадь пролива {{ calc_data[0] }} м2, уд.масс.скорость {{ calc_data[1]
+                }} кг/(с*м2), мол.масса {{ calc_data[2] }} кг/кмоль, Ткип {{ calc_data[3] }} град.С, скорость ветра {{ calc_data[4] }} м/с </h6>
+            <h6 class="text-left">Приложение к Приказу МЧС России от 10.07.2009 N 404. VI. Интенсивность теплового
+                излучения</h6>
+        </div>
+
+        {% autoescape off %}
+        {{ plot_div_q_termal }}
+        {% endautoescape %}
+
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Расстояние, м</th>
+                <th scope="col">Интенсивность излучения, кВт/м2</th>
+                <th scope="col">Пробит, -</th>
+                <th scope="col">Вер-ть поражения, -</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for z in zone_array %}
+            <tr class="pointer">
+                <td>{{ z[0] }}</td>
+                <td>{{ z[1] }}</td>
+                <td>{{ z[2] }}</td>
+                <td>{{ z[3] }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+</div>
+
+
+
