@@ -34,7 +34,7 @@ async def get_explosion_sp(request: Request):
 
 
 @router.post('/sp1213130-2009', response_class=HTMLResponse)
-async def post_dev_edit(request: Request,
+async def post_explosion_sp(request: Request,
                         mass: str = Form(...), heat_of_combustion: str = Form(...),
                         z: str = Form(...)):
     user = await get_current_user(request)
@@ -82,7 +82,7 @@ async def get_explosion_tvs(request: Request):
 
 
 @router.post('/tvs', response_class=HTMLResponse)
-async def post_dev_edit(request: Request,
+async def post_explosion_tvs(request: Request,
                         mass: str = Form(...), heat_of_combustion: str = Form(...),
                         view_space: str = Form(...), class_substance: str = Form(...),
                         sigma: str = Form(...), energy_level: str = Form(...), ):

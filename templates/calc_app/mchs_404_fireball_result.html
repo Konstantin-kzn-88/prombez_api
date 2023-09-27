@@ -1,0 +1,83 @@
+{% include 'includes/layout.html' %}
+
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h6 class="text-left">Результат расчета для: масса ТВС {{ calc_data[0] }} кг, ср.поверхностная плотность теплового излучения {{ calc_data[1]
+                }} кВт/м<sup>2</sup></h6>
+            <h6 class="text-left">Приложение к Приказу МЧС России от 10.07.2009 N 404. VI. Интенсивность теплового
+                излучения</h6>
+        </div>
+
+        {% autoescape off %}
+        {{ plot_div_fireball_q }}
+        {% endautoescape %}
+
+        {% autoescape off %}
+        {{ plot_div_fireball_Q }}
+        {% endautoescape %}
+
+        <div class="card-header">
+            <p data-toggle="tooltip" data-html="true"
+               title="
+Q = 1.2E+05 кДж/м2 - Ожог первой степени
+Q = 2.2E+05 кДж/м2 - Ожог второй степени
+Q = 3.2E+05 кДж/м2 - Ожог третьей степени
+Q = 6.0E+05 кДж/м2 - Смертельное поражение">Таблица - 1. Зоны поражения</p>
+        </div>
+
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Q = 6.0*10<sup>5</sup></th>
+                <th scope="col">Q = 3.2*10<sup>5</sup></th>
+                <th scope="col">Q = 2.2*10<sup>5</sup></th>
+                <th scope="col">Q = 1.2*10<sup>5</sup></th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr class="pointer">
+                <td>{{ zone_cls_array[0] }}</td>
+                <td>{{ zone_cls_array[1] }}</td>
+                <td>{{ zone_cls_array[2] }}</td>
+                <td>{{ zone_cls_array[3] }}</td>
+            </tr>
+            </tbody>
+
+        </table>
+
+        <div class="card-header">
+            <p>Таблица - 2. Зависимость поражающего фактора от расстояния</p>
+        </div>
+
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Расстояние, м</th>
+                <th scope="col">Интенсивность, кВт/м<sup>2</sup></th>
+                <th scope="col">Доза, кДж/м<sup>2</sup></th>
+                <th scope="col">Пробит, -</th>
+                <th scope="col">Вер-ть поражения, -</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for z in zone_array %}
+            <tr class="pointer">
+                <td>{{ z[0] }}</td>
+                <td>{{ z[1] }}</td>
+                <td>{{ z[2] }}</td>
+                <td>{{ z[3] }}</td>
+                <td>{{ z[4] }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+</div>
+
+
+
