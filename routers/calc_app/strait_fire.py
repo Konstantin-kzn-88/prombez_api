@@ -40,13 +40,17 @@ async def post_dev_edit(request: Request,
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url='/auth', status_code=status.HTTP_302_FOUND)
-
+    # 1. Получить экземпляр класса пожара
     fire_unit = calc_strait_fire.Strait_fire()
+    # 2. Получить зоны не классифицированные для большой таблицы
     zone_array = fire_unit.termal_radiation_array(float(s_spill), float(m_sg), float(mol_mass), float(t_boiling),
                                                   float(wind_velocity))
     # Преобразование к виду [(r, q, pr, q_vp),...]
     zipped_values = zip(zone_array[0], zone_array[1], zone_array[2], zone_array[3])
     zipped_list = list(zipped_values)
+    # 3. Получим зоны классифицированные
+    zone_cls_array = fire_unit.termal_class_zone(float(s_spill), float(m_sg), float(mol_mass), float(t_boiling),
+                                                  float(wind_velocity))
 
     plot_div_q_termal = plot({
         "data": [Scatter(x=zone_array[0], y=zone_array[1], line=dict(color='#62fb60', width=3))],
@@ -57,6 +61,7 @@ async def post_dev_edit(request: Request,
     return templates.TemplateResponse('calc_app/mchs_404_strait_fire_result.html', {'request': request,
                                                                                     'user': user,
                                                                                     'zone_array': zipped_list,
+                                                                                    'zone_cls_array': zone_cls_array,
                                                                                     'plot_div_q_termal': plot_div_q_termal,
                                                                                     'calc_data': (
                                                                                         s_spill, m_sg, mol_mass,

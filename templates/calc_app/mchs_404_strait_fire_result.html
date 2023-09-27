@@ -4,8 +4,10 @@
 <div class="container">
     <div class="card">
         <div class="card-header">
-            <h6 class="text-left">Результат расчета для: площадь пролива {{ calc_data[0] }} м2, уд.масс.скорость {{ calc_data[1]
-                }} кг/(с*м2), мол.масса {{ calc_data[2] }} кг/кмоль, Ткип {{ calc_data[3] }} град.С, скорость ветра {{ calc_data[4] }} м/с </h6>
+            <h6 class="text-left">Результат расчета для: площадь пролива {{ calc_data[0] }} м<sup>2</sup>, уд.масс.скорость {{
+                calc_data[1]
+                }} кг/(с*м<sup>2</sup>), мол.масса {{ calc_data[2] }} кг/кмоль, Ткип {{ calc_data[3] }} град.С, скорость ветра {{
+                calc_data[4] }} м/с </h6>
             <h6 class="text-left">Приложение к Приказу МЧС России от 10.07.2009 N 404. VI. Интенсивность теплового
                 излучения</h6>
         </div>
@@ -14,11 +16,45 @@
         {{ plot_div_q_termal }}
         {% endautoescape %}
 
+        <div class="card-header">
+            <p data-toggle="tooltip" data-html="true"
+               title="
+q=10.5 кВт/м2 - Непереносимая боль через 3 - 5 с, Ожог 1 степени через 6 - 8 с, Ожог 2 степени через 12 - 16 с
+q=7.0 кВт/м2 - Непереносимая боль через 20 - 30 с, Ожог 1 степени через 15 - 20 с, Ожог 2 степени через 30 - 40 с
+q=4.2 кВт/м2 - Безопасно для человека в брезентовой одежде
+q=1.4 кВт/м2 - Без негативных последствий в течение длительного времени">Таблица - 1. Зоны поражения</p>
+        </div>
+
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">q=10.5 кВт/м<sup>2</sup></th>
+                <th scope="col">q=7.0 кВт/м<sup>2</sup></th>
+                <th scope="col">q=4.2 кВт/м<sup>2</sup></th>
+                <th scope="col">q=1.4 кВт/м<sup>2</sup></th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr class="pointer">
+                <td>{{ zone_cls_array[0] }}</td>
+                <td>{{ zone_cls_array[1] }}</td>
+                <td>{{ zone_cls_array[2] }}</td>
+                <td>{{ zone_cls_array[3] }}</td>
+            </tr>
+            </tbody>
+
+        </table>
+
+        <div class="card-header">
+            <p>Таблица - 2. Зависимость поражающего фактора от расстояния</p>
+        </div>
+
         <table class="table table-hover">
             <thead>
             <tr>
                 <th scope="col">Расстояние, м</th>
-                <th scope="col">Интенсивность излучения, кВт/м2</th>
+                <th scope="col">Интенсивность излучения, кВт/м<sup>2</sup></th>
                 <th scope="col">Пробит, -</th>
                 <th scope="col">Вер-ть поражения, -</th>
             </tr>
