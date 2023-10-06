@@ -47,7 +47,7 @@ class LPG_evaporation:
             (self.strait_area / (1.64 * math.pow(10, -5)) * 2.74 * math.pow(10, -2) * time)) / math.sqrt(self.strait_area)
         mass = first_add * (second_add + third_add)
 
-        return mass
+        return int(mass)
 
     def evaporation_array(self) -> tuple:
         """
@@ -63,7 +63,7 @@ class LPG_evaporation:
 
 
 if __name__ == '__main__':
-    ev_class = LPG_evaporation(molar_mass=28, strait_area=5128, wind_velosity=5,
-                               lpg_temperature=-104, surface_temperature=36)
+    ev_class = LPG_evaporation(molar_mass=98, strait_area=2000, wind_velosity=1,
+                               lpg_temperature=-30, surface_temperature=30)
 
     print(ev_class.evaporation_in_moment(3600))

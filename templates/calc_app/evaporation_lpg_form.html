@@ -1,0 +1,49 @@
+{% include 'includes/layout.html' %}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h6 class="text-left">СП 12.13130-2009.
+                Приложение "В.1 Методы расчета критериев пожарной опасности для горючих газов и паров (испарение СУГ)"</h6>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Молярная масса, кг/кмоль</label>
+                        <input type="number" min="0" step="1" class="form-control" name="molar_mass" required
+                               placeholder="Например, 98 кг/кмоль">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Площадь пролива, м<sup>2</sup></label>
+                        <input type="number" min="0" step="1" class="form-control" name="strait_area" required
+                               placeholder="Например, 2000 м2">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Скорость ветра, м/с</label>
+                        <input type="number" min="0" step="1" class="form-control" name="wind_velosity" required
+                               placeholder="Например, 1 м/с">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Температура газа в оборудовании, <sup>о</sup>С</label>
+                        <input type="number" min="-100" step="1" class="form-control" name="lpg_temperature" required
+                               placeholder="Например, -30 град.С">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Температура поверхности пролива, <sup>о</sup>С</label>
+                        <input type="number" min="0" step="1" class="form-control" name="surface_temperature" required
+                               placeholder="Например, 30 град.С">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-info">Расчет</button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -174,9 +174,9 @@ class Explosion:
 
 if __name__ == '__main__':
     ev_class = Explosion()
-    class_substance = 3
-    view_space = 4
-    mass = 19
+    class_substance = 4
+    view_space = 3
+    mass = 17
     heat_of_combustion = 46000
     sigma = 7
     energy_level = 2

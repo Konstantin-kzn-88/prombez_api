@@ -1,0 +1,43 @@
+{% include 'includes/layout.html' %}
+
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h6 class="text-left">Результат расчета для: молярная масса {{ calc_data[0] }} кг/кмоль, площадь пролива {{
+                calc_data[1]
+                }} м<sup>2</sup>, скорость ветра {{ calc_data[2] }} м/с, тем-ра СУГ {{ calc_data[3] }} <sup>о</sup>С,
+                тем-ра поверхности {{ calc_data[4] }} <sup>о</sup>С </h6>
+            <h6 class="text-left">СП 12.13130-2009.
+                Приложение "В.1 Методы расчета критериев пожарной опасности для горючих газов и паров (испарение
+                СУГ)"</h6>
+        </div>
+
+        {% autoescape off %}
+        {{ plot_div_evaporation }}
+        {% endautoescape %}
+
+        <div class="card-header">
+            <p>Таблица - 1. Зависимость массы испарившегося вещества от времени</p>
+        </div>
+
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Время, с</th>
+                <th scope="col">Масса, кг</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for z in zone_array %}
+            <tr class="pointer">
+                <td>{{ z[0] }}</td>
+                <td>{{ z[1] }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+</div>
