@@ -42,7 +42,7 @@ class Liquid_evaporation:
         """
 
         time_arr = [t for t in range(1, 3601)]
-        evaporatiom_arr = [self.evaporation_in_moment(t, steam_pressure, molar_mass, strait_area)[0] for t in
+        evaporatiom_arr = [round(self.evaporation_in_moment(t, steam_pressure, molar_mass, strait_area)[0],2) for t in
                            range(1, 3601)]
 
         result = (time_arr, evaporatiom_arr)

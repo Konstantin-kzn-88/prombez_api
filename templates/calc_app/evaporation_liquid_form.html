@@ -1,0 +1,36 @@
+{% include 'includes/layout.html' %}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h6 class="text-left">СП 12.13130-2009.
+                Приложение "В.1 Методы расчета критериев пожарной опасности для горючих газов и паров (испарение жидкости)"</h6>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Молярная масса, кг/кмоль</label>
+                        <input type="number" min="0" step="1" class="form-control" name="molar_mass" required
+                               placeholder="Например, 98 кг/кмоль">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Площадь пролива, м<sup>2</sup></label>
+                        <input type="number" min="0" step="1" class="form-control" name="strait_area" required
+                               placeholder="Например, 2000 м2">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Давление насыщенного пара, кПа</label>
+                        <input type="number" min="0" step="1" class="form-control" name="steam_pressure" required
+                               placeholder="Например, 35 кПа">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-info">Расчет</button>
+            </form>
+        </div>
+    </div>
+</div>
