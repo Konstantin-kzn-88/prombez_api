@@ -3,7 +3,7 @@ import models
 from database import engine
 from routers import auth
 from routers.docs_app import account, organization, project, object, substance, device, pipeline
-from routers.calc_app import explosion, strait_fire, fireball, evaporation
+from routers.calc_app import explosion, strait_fire, fireball, evaporation, dispersion
 from routers.price import price
 from starlette.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -30,6 +30,7 @@ app.include_router(explosion.router)
 app.include_router(strait_fire.router)
 app.include_router(fireball.router)
 app.include_router(evaporation.router)
+app.include_router(dispersion.router)
 
 @app.get("/")
 async def home(request: Request):

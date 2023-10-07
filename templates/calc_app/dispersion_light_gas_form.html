@@ -1,0 +1,115 @@
+{% include 'includes/layout.html' %}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h6 class="text-left">Рассеивание "лёгкого" газа (Модель Гаусса)</h6>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Температура воздуха, <sup>o</sup>C</label>
+                        <input type="number" min="-100" step="1" class="form-control" name="ambient_temperature"
+                               required
+                               placeholder="Например, 30 гр.С">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Степень облачности, -, м</label>
+                        <input type="number" min="0" max="8" step="1" class="form-control" name="cloud" required
+                               placeholder="Например, 0 -">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Скорость ветра, м/с</label>
+                        <input type="number" min="1" step="1" class="form-control" name="wind_speed" required
+                               placeholder="Например, 1 м/с">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Высота выброса, м</label>
+                        <input type="number" min="1" step="1" class="form-control" name="ejection_height" required
+                               placeholder="Например, 1 м">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <div><label>Тип застройки</label></div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="is_urban_area" id="is_urban_area"
+                                   value=1 checked>
+                            <label class="form-check-label" for="is_night">
+                                Городская (плотная) застройка
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="is_urban_area" id="is_not_urban_area"
+                                   value=0>
+                            <label class="form-check-label" for="is_not_urban_area">
+                                Загородная застройка (редкие строения)
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <div><label>Время суток</label></div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="is_night" id="is_night"
+                                   value=1 checked>
+                            <label class="form-check-label" for="is_night">
+                                Ночь
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="is_night" id="is_not_night"
+                                   value=0>
+                            <label class="form-check-label" for="is_not_night">
+                                День
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Температура газа, <sup>o</sup>C</label>
+                        <input type="number" min="-100" step="1" class="form-control" name="gas_temperature"
+                               required
+                               placeholder="Например, 50 гр.С">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Масса газа (первичное облако), кг</label>
+                        <input type="number" min="1" step="1" class="form-control" name="gas_weight" required
+                               placeholder="Например, 10 кг">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Расход газа (вторичное облако), кг/с</label>
+                        <input type="number" min="0" step="1" class="form-control" name="gas_flow"
+                               required
+                               placeholder="Например, 10 кг/с">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Время отсечсения (вторичное облако), с</label>
+                        <input type="number" min="0" step="1" class="form-control" name="closing_time" required
+                               placeholder="Например, 30 с">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Молярная масса, кг/кмоль</label>
+                        <input type="number" min="0" step="1" class="form-control" name="molecular_weight" required
+                               placeholder="Например, 98 кг/кмоль">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-info">Расчет</button>
+            </form>
+        </div>
+    </div>
+</div>
