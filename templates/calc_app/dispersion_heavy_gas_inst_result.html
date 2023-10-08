@@ -1,0 +1,48 @@
+{% include 'includes/layout.html' %}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h6 class="text-left">Результат расчета для: объем газа {{ calc_data[0] }} м<sup>3</sup>, плотность газа {{
+                calc_data[1] }} кг/м<sup>3</sup>, скорость ветра {{ calc_data[2] }} м/с, плотность воздуха {{ calc_data[3] }} кг/м<sup>3</sup></h6>
+            <h6 class="text-left">Рассеивание "тяжёлого" газа (Модель Britter-McQuaid)</h6>
+        </div>
+
+        {% autoescape off %}
+        {{ plot_div_dispertion }}
+        {% endautoescape %}
+
+        {% autoescape off %}
+        {{ plot_div_dose }}
+        {% endautoescape %}
+
+        <div class="card-header">
+            <p>Таблица - 1. Зависимость концентрации и токсодозы от расстояния</p>
+        </div>
+
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Расстояние, м</th>
+                <th scope="col">Концентрация, кг/м<sup>3</sup></th>
+                <th scope="col">Токсодоза, мг/мин*л</th>
+                <th scope="col">Ширина облака, м</th>
+                <th scope="col">Время прохода концентарции, с</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for z in zone_array %}
+            <tr class="pointer">
+                <td>{{ z[2] }}</td>
+                <td>{{ z[1] }}</td>
+                <td>{{ z[0] }}</td>
+                <td>{{ z[3] }}</td>
+                <td>{{ z[4] }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+</div>

@@ -20,8 +20,8 @@ class Instantaneous_source:
         """
         Класс предназначен для расчета выброса тяжелого газа
 
-        :paramwind_speed - скорость ветра, м/с
-        :paramdensity_air - плотность воздуха, кг/м3
+        :param wind_speed - скорость ветра, м/с
+        :param density_air - плотность воздуха, кг/м3
         :param density_init: - плотность газа, кг/м3
         :param volume_gas: - объем газа, м3
         """
@@ -126,7 +126,7 @@ class Instantaneous_source:
         :param beta_aprox: - параметр для апроксимации графика (бета-параметр)
         :return: x_dist - расстояние, м
         '''
-        x_dist = math.pow(10, beta_aprox) * math.pow(self.volume_gas, 1 / 3)
+        x_dist = round(math.pow(10, beta_aprox) * math.pow(self.volume_gas, 1 / 3), 2)
         return x_dist
 
     def find_time(self, x_dist: float):
@@ -172,10 +172,10 @@ class Instantaneous_source:
             time_cloud = time_arr[0]
             b_eq = time_arr[1]
 
-            data_concentration.append(conc_in_dist)
-            data_x_dist.append(x_dist)
-            data_width.append(b_eq)
-            data_time.append(time_cloud)
+            data_concentration.append(round(conc_in_dist, 2))
+            data_x_dist.append(round(x_dist, 2))
+            data_width.append(round(b_eq, 2))
+            data_time.append(round(time_cloud, 2))
 
         return (data_concentration, data_x_dist, data_width, data_time)
 
@@ -184,7 +184,7 @@ class Instantaneous_source:
         :param concentration - концентрация, кг/м3
         :return: (dose): float: - токсодоза, мг*мин/л (переход взят из методики ТОКСИ2)
         '''
-        dose = ((2 * math.pow(2 * math.pi, 2)) / self.wind_speed) * concentration * 16.67
+        dose = round(((2 * math.pow(2 * math.pi, 2)) / self.wind_speed) * concentration * 16.67,2)
         return dose
 
     def result(self):
@@ -351,7 +351,7 @@ class Continuous_source:
         :param concentration - концентрация, кг/м3
         :return: (dose): float: - токсодоза, мг*мин/л (переход взят из методики ТОКСИ2)
         '''
-        dose = ((2 * math.pow(2 * math.pi, 2)) / self.wind_speed) * concentration * 16.67
+        dose = round(((2 * math.pow(2 * math.pi, 2)) / self.wind_speed) * concentration * 16.67,2)
         return dose
 
     def result(self):
@@ -360,8 +360,8 @@ class Continuous_source:
 
 
 if __name__ == '__main__':
-    # cls = Instantaneous_source(wind_speed=4, density_air=1.21, density_init=6, volume_gas=10)
-    # print(cls.concentration())
-
-    cls = Continuous_source(wind_speed=1, density_air=1.21, density_init=6, gas_flow=1)
+    cls = Instantaneous_source(wind_speed=4, density_air=1.21, density_init=6, volume_gas=10)
     print(cls.concentration())
+
+    # cls = Continuous_source(wind_speed=1, density_air=1.21, density_init=6, gas_flow=1)
+    # print(cls.concentration())
