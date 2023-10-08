@@ -1,0 +1,56 @@
+{% include 'includes/layout.html' %}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h6 class="text-left">Расчет истечения жидкости из резервуара (Marc J. Assael)</h6>
+            <h6 class="text-left">Прим.: размер отвестия намного меньше размера оборудования</h6>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Объем резервуара, м<sup>3</sup></label>
+                        <input type="number" min="1" step="1" class="form-control" name="volume" required
+                               placeholder="Например, 2000 м3">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Высота взлива, м</label>
+                        <input type="number" min="0.1" step="0.1" class="form-control" name="height" required
+                               placeholder="Например, 15 м">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Давление в оборудовании, МПа</label>
+                        <input type="number" min="0" step="0.01" class="form-control" name="pressure" required
+                               placeholder="Например, 2 МПа">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Степень заполнения, -</label>
+                        <input type="number" min="0.01" max="1" step="0.01" class="form-control" name="fill_factor"
+                               required
+                               placeholder="Например, 0.8">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Диаметр отверстия истечения, мм</label>
+                        <input type="number" min="1" step="1" class="form-control" name="hole_diametr" required
+                               placeholder="Например, 100 мм">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Плотность, кг/м<sup>3</sup></label>
+                        <input type="number" min="0" step="1" class="form-control" name="density"
+                               required
+                               placeholder="Например, 850 кг/м3">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-info">Расчет</button>
+            </form>
+        </div>
+    </div>
+</div>

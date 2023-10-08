@@ -95,5 +95,5 @@ class Outflow:
 
 
 if __name__ == '__main__':
-    cls = Outflow(6000, 15, 0, 0.75, 100, 773)
+    cls = Outflow(2000, 15, 1, 0.8, 100, 850)
     print(cls.result())
