@@ -35,9 +35,9 @@ class LCLP:
 
 if __name__ == '__main__':
     ev_class = LCLP()
-    mass = 200
-    mol_mass = 100
-    t_boiling = 63
-    lower_concentration = 1.8
+    mass = 10.96
+    mol_mass = 172.3
+    t_boiling = 180
+    lower_concentration = 3
 
     print(ev_class.lower_concentration_limit(mass, mol_mass, t_boiling, lower_concentration))

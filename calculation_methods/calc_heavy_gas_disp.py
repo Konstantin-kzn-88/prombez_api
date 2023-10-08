@@ -340,9 +340,9 @@ class Continuous_source:
             l_b = g0 * volumetric_consumption_gas / math.pow(self.wind_speed, 3)
             widht_plume = 2 * self.radius_flow + 8 * l_b + 2.5 * math.pow(l_b, 1 / 3) * math.pow(x_dist, 2 / 3)
 
-            data_concentration.append(conc_in_dist)
-            data_x_dist.append(x_dist)
-            data_width.append(widht_plume)
+            data_concentration.append(round(conc_in_dist,2))
+            data_x_dist.append(round(x_dist,2))
+            data_width.append(round(widht_plume,2))
 
         return (data_concentration, data_x_dist, data_width)
 
