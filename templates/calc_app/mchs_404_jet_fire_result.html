@@ -1,0 +1,34 @@
+{% include 'includes/layout.html' %}
+
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h6 class="text-left">Результат расчета для: расхода {{ consumption }} кг/с</h6>
+            <h6 class="text-left">Приложение к Приказу МЧС России от 10.07.2009 N 404. VI. Интенсивность теплового
+                излучения</h6>
+        </div>
+
+
+        <div class="card-header">
+            <p data-toggle="tooltip" data-html="true">Таблица - 1. Зоны поражения</p>
+        </div>
+
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Длина, м</th>
+                <th scope="col">Ширина, м</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr class="pointer">
+                <td>{{ calc_data[0] }}</td>
+                <td>{{ calc_data[1] }}</td>
+            </tr>
+            </tbody>
+
+        </table>
+    </div>
+</div>
